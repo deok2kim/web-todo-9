@@ -14,4 +14,12 @@ module.exports = {
     'simple-import-sort/exports': 'error',
   },
   plugins: ['simple-import-sort'],
+  settins: {
+    'import/resolver': {
+      alias: {
+        map: [['@/*', './src/*']],
+        extensions: ['.js', '.json'],
+      },
+    },
+  },
 };
