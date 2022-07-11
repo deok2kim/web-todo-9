@@ -43,7 +43,12 @@ module.exports = {
         use: [
           isProductionMode ? MiniCssExtractPlugin.loader : "style-loader",
           "css-loader",
-          "sass-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              additionalData: `@import '@/commons/styles/_colors.scss';`,
+            },
+          },
         ],
       },
       {
