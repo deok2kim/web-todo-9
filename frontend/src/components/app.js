@@ -1,6 +1,46 @@
 import './app.scss';
 
+import { $ } from '@/commons/utils/query-selector';
+import Todos from '@/components/Todos/index';
 import Component from '@/libs/Component';
+
+const dummyToods = [
+  {
+    type: 1,
+    todos: [
+      {
+        title: '테스트1234',
+        body: '테스트바디4586',
+        author: '궈녁진',
+      },
+    ],
+  },
+  {
+    type: 2,
+    todos: [
+      {
+        title: '테스트1234',
+        body: '테스트바디4586',
+        author: '궈녁진',
+      },
+      {
+        title: '으아아아악',
+        body: '으아아앙케버버',
+        author: '테스터',
+      },
+    ],
+  },
+  {
+    type: 3,
+    todos: [
+      {
+        title: '테스트1234',
+        body: '테스트바디4586',
+        author: '궈녁진',
+      },
+    ],
+  },
+];
 
 class App extends Component {
   constructor($container) {
@@ -25,6 +65,11 @@ class App extends Component {
 
   render() {
     this.$container.innerHTML = this.template();
+    const todosContainer = $('.todos-container');
+
+    dummyToods.forEach((dummyTodo) => {
+      new Todos(todosContainer, dummyTodo);
+    });
   }
 }
 

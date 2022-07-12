@@ -1,0 +1,33 @@
+.todos {
+    display: flex;
+    flex-direction: column;
+
+    gap: 16px;
+
+    width: 308px;
+
+    &__header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    &__title {
+        display: inline;
+    }
+
+    &__todo-count {
+        width: 26px;
+        height: 26px;
+
+        border-radius: 20px;
+        background-color: $gray;
+    }
+
+    &__button-wrapper {
+        display: flex;
+        align-items: center;
+
+    }
+}
