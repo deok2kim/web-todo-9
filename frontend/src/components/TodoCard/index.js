@@ -78,7 +78,6 @@ class TodoCard extends Component {
 								</button>
 							`
         }
-				
 			</div>
 		`;
   }
