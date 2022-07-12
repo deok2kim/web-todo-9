@@ -16,6 +16,12 @@
         gap: 8px;
 
         width: 100%;
+
+        & > .button-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
     }
 
     &__title {

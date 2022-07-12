@@ -1,3 +1,11 @@
+* {
+    box-sizing: border-box;
+}
+
+button:hover {
+        cursor: pointer;
+    }
+
 body {
     background-color: #e5e5e5;
 }
@@ -42,10 +50,15 @@ nav {
     width: 134px;
     height: 40px;
     border-radius: 6px;
+
+    &:disabled {
+        opacity: 0.6;
+    }
 }
 
 .accent {
-    background: #86C6FF;
+    background: $blue;
+    color: $white;
 }
 
 .normal {
