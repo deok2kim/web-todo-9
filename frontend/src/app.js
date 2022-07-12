@@ -1,4 +1,5 @@
-import MyTest from './components/Todos/test';
+import TodoCard from '@/components/TodoCard/index';
 
-MyTest();
+const app = document.getElementById('app');
 
+new TodoCard(app);

@@ -1,0 +1,44 @@
+.card {
+    width: 308px;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+    border-radius: 6px;
+    box-shadow: 0px 1px 30px rgba(224, 224, 224, 0.3);
+
+    position: relative;
+
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+
+        width: 100%;
+    }
+
+    &__title {
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 26px;
+        color: #010101;
+    }
+
+    &__body {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        color: #010101;
+    }
+
+    &__author {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 17px;
+        color: #010101;
+    }
+
+}
