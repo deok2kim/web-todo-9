@@ -2,6 +2,8 @@ import './index.scss';
 
 import add from '@/assets/add.svg';
 import remove from '@/assets/remove.svg';
+import { $ } from '@/commons/utils/query-selector';
+import TodoCard from '@/components/TodoCard/index';
 import Component from '@/libs/Component';
 
 class Todos extends Component {
@@ -10,16 +12,21 @@ class Todos extends Component {
     this.render();
   }
 
-  template() {
-    const todosSection = document.createElement('section');
-    todosSection.className = 'todos';
+  getTodosLength() {
+    return this.state?.todos.length || 0;
+  }
 
-    todosSection.innerHTML = `
-        <section class="todos">
+  getTodoType() {
+    return this.state?.type || '';
+  }
+
+  template() {
+    return `
+        <section class="todos" id="${this.getTodoType()}">
 					<div class="todos__header">
 							<div>
-								<h2 class="todos__title"></h2> 
-								<span class="todos__todo-count"></span>
+								<h2 class="todos__title">해야할 일</h2> 
+								<div class="todos__todo-count">${this.getTodosLength()}</div>
 							</div>
 							<div class="todos__button-wrapper">
 								<button>
@@ -30,24 +37,17 @@ class Todos extends Component {
 								</button>
 							</div>
             </div>
-						<ul>
-							${this.state.todos.map(
-                (todo) =>
-                  `
-									<li>
-										<h4>${todo.title}</h4>
-									</li>
-								`,
-              )}
-						</ul>
+            <div class="todos__todo-container"></div>
         </section>
     `;
-
-    return todosSection;
   }
 
   render() {
-    this.$container.appendChild(this.template());
+    this.$container.insertAdjacentHTML('beforeend', this.template());
+    const todoContainer = $(`#${this.getTodoType()} .todos__todo-container`);
+    this.state.todos.forEach(
+      (todo) => new TodoCard(todoContainer, { inputs: todo, cardStatus: 'idle' }),
+    );
   }
 }
 

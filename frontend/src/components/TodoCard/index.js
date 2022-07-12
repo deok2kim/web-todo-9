@@ -7,15 +7,6 @@ class TodoCard extends Component {
   constructor($container, initialState) {
     super($container, initialState);
 
-    this.state = {
-      inputs: {
-        title: 'Title',
-        body: 'Body',
-        author: 'Author',
-      },
-      cardStatus: 'creatable',
-    };
-
     this.render();
   }
 
@@ -69,12 +60,13 @@ class TodoCard extends Component {
   setButton() {}
 
   template() {
+    const { title, body, author } = this.state.inputs;
     return `
 			<article class="${this.getCardStyleByStatus()}">
 				<div class="card__wrapper">
-					<h3 class="card__title">TITLE</p>	
-					<p class="card__body">BODY</p>
-					<p class="card__author">author by WEB</p>
+					<h3 class="card__title">${title}</p>	
+					<p class="card__body">${body}</p>
+					<p class="card__author">${author}</p>
 					${this.isCardActive() ? this.getTemplateForButton() : ''}
 				</div>
 				${
@@ -92,7 +84,7 @@ class TodoCard extends Component {
   }
 
   render() {
-    this.$container.innerHTML = this.template();
+    this.$container.insertAdjacentHTML('beforeend', this.template());
   }
 }
 

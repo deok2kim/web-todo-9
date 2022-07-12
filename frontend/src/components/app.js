@@ -6,7 +6,7 @@ import Component from '@/libs/Component';
 
 const dummyToods = [
   {
-    type: 1,
+    type: 'todo',
     todos: [
       {
         title: '테스트1234',
@@ -16,7 +16,7 @@ const dummyToods = [
     ],
   },
   {
-    type: 2,
+    type: 'onProcess',
     todos: [
       {
         title: '테스트1234',
@@ -31,7 +31,7 @@ const dummyToods = [
     ],
   },
   {
-    type: 3,
+    type: 'done',
     todos: [
       {
         title: '테스트1234',
