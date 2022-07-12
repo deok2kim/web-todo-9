@@ -63,24 +63,3 @@ body {
         color: #010101;
     }
 }
-
-.card-container {
-
-    & > .title {
-        font-weight: 700;
-        font-size: 18px;
-        line-height: 26px;
-    }
-
-    & > .count {
-        width: 26px;
-        height: 26px;
-        background: #BDBDBD;
-        border-radius: 20px;
-    }
-}
-
-.noti-container {
-    width: 452px;
-}
-

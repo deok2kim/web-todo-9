@@ -29,7 +29,7 @@
         font-weight: 700;
         font-size: 16px;
         line-height: 26px;
-        color: #010101;
+        color: $black;
     }
 
     &__body {
@@ -37,7 +37,7 @@
         font-weight: 400;
         font-size: 14px;
         line-height: 20px;
-        color: #010101;
+        color: $black;
     }
 
     &__author {
@@ -45,7 +45,7 @@
         font-weight: 400;
         font-size: 12px;
         line-height: 17px;
-        color: #010101;
+        color: $black;
     }
 
 }
