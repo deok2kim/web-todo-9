@@ -1,0 +1,48 @@
+.todos {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 308px;
+
+    &__header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &>div:first-child {
+            align-items: center;
+            display: flex;
+            gap: 10px;
+        }
+    }
+
+    &__title {
+        display: inline;
+        font-size: 18px;
+        font-weight: 700;
+
+    }
+
+    &__todo-count {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 20px;
+        background-color: $gray;
+    }
+
+    &__button-wrapper {
+        display: flex;
+        align-items: center;
+
+    }
+
+    &__todo-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+}
