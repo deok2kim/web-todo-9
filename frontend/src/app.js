@@ -1,4 +1,4 @@
-import MyTest from "./components/Todos/test";
+import MyTest from './components/Todos/test';
 
 MyTest();
 
