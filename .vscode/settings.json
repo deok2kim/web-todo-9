@@ -3,5 +3,5 @@
   "editor.formatOnPaste": true,
   "eslint.format.enable": true,
   "javascript.preferences.importModuleSpecifier": "non-relative",
-  "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

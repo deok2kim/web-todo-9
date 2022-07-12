@@ -10,13 +10,13 @@
         justify-content: space-between;
         align-items: center;
 
-        & > div:first-child {
+        &>div:first-child {
             align-items: center;
             display: flex;
             gap: 10px;
         }
     }
-    
+
     &__title {
         display: inline;
         font-size: 18px;
