@@ -70,9 +70,9 @@ class TodoCard extends Component {
 
   template() {
     return `
-			<div class="${this.getCardStyleByStatus()}">
+			<article class="${this.getCardStyleByStatus()}">
 				<div class="card__wrapper">
-					<p class="card__title">TITLE</p>	
+					<h3 class="card__title">TITLE</p>	
 					<p class="card__body">BODY</p>
 					<p class="card__author">author by WEB</p>
 					${this.isCardActive() ? this.getTemplateForButton() : ''}

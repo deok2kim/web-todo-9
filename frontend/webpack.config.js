@@ -7,7 +7,7 @@ const isProductionMode = process.env.NODE_ENV === 'production';
 
 module.exports = {
   mode: isProductionMode ? 'production' : 'development',
-  entry: path.resolve(__dirname, './src', 'app.js'),
+  entry: path.resolve(__dirname, './src', 'index.js'),
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: '[hash].js',
