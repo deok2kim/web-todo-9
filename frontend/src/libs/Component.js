@@ -1,7 +1,7 @@
 class Component {
-  constructor($container, initialState) {
+  constructor($container, initialState = {}) {
     this.$container = $container;
-    this.state = initialState || {};
+    this.state = initialState;
   }
 
   setState() {}
