@@ -1,5 +1,6 @@
 import './app.scss';
 
+import hamburger from '@/assets/hamburger.svg';
 import { $ } from '@/commons/utils/query-selector';
 import Todos from '@/components/Todos/index';
 import Component from '@/libs/Component';
@@ -54,7 +55,7 @@ class App extends Component {
         <nav>
           <h1>TO-DO LIST</h1>
           <button class="btn-toggle-sidebar">
-            햄
+            <img src="${hamburger}" />
           </button>
         </nav>
         <section class="todos-container"></section>
