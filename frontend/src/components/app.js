@@ -55,7 +55,7 @@ class App extends Component {
       <main class="main-page">
         <nav>
           <h1>TO-DO LIST</h1>
-          <button class="btn-toggle-sidebar">
+          <button class="btn-open-notifications">
             <img src="${hamburger}" />
           </button>
         </nav>
@@ -65,15 +65,15 @@ class App extends Component {
     `;
   }
 
-  openNotis() {
+  openNotifications() {
     const notifications = $('.notifications');
     notifications.classList.remove('close');
     notifications.classList.add('open');
   }
 
   setEvent() {
-    const sidebarToggleBtn = $('.btn-toggle-sidebar');
-    sidebarToggleBtn.addEventListener('click', this.openNotis);
+    const notificationOpenBtn = $('.btn-open-notifications');
+    notificationOpenBtn.addEventListener('click', this.openNotifications);
   }
 
   render() {

@@ -27,7 +27,7 @@ class Notifications extends Component {
     this.render();
   }
 
-  closeNotis() {
+  closeNotifications() {
     const notifications = $('.notifications');
     notifications.classList.remove('open');
     notifications.classList.add('close');
@@ -35,7 +35,7 @@ class Notifications extends Component {
 
   setEvent() {
     const sidebarToggleBtn = $('#btnCloseSideBar');
-    sidebarToggleBtn.addEventListener('click', this.closeNotis);
+    sidebarToggleBtn.addEventListener('click', this.closeNotifications);
   }
 
   template() {
