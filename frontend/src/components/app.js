@@ -1,6 +1,8 @@
 import './app.scss';
 
+import hamburger from '@/assets/hamburger.svg';
 import { $ } from '@/commons/utils/query-selector';
+import Notifications from '@/components/Notifications/index';
 import Todos from '@/components/Todos/index';
 import Component from '@/libs/Component';
 
@@ -53,14 +55,25 @@ class App extends Component {
       <main class="main-page">
         <nav>
           <h1>TO-DO LIST</h1>
-          <button class="btn-toggle-sidebar">
-            햄
+          <button class="btn-open-notifications">
+            <img src="${hamburger}" />
           </button>
         </nav>
         <section class="todos-container"></section>
         <aside class="notifications"></aside>
       </main>
     `;
+  }
+
+  openNotifications() {
+    const notifications = $('.notifications');
+    notifications.classList.remove('close');
+    notifications.classList.add('open');
+  }
+
+  setEvent() {
+    const notificationOpenBtn = $('.btn-open-notifications');
+    notificationOpenBtn.addEventListener('click', this.openNotifications);
   }
 
   render() {
@@ -70,6 +83,11 @@ class App extends Component {
     dummyToods.forEach((dummyTodo) => {
       new Todos(todosContainer, dummyTodo);
     });
+
+    const notifications = $('.notifications');
+    new Notifications(notifications, {});
+
+    this.setEvent();
   }
 }
 
