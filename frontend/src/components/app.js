@@ -73,7 +73,6 @@ class App extends Component {
 
   setEvent() {
     const sidebarToggleBtn = $('.btn-toggle-sidebar');
-    console.log(sidebarToggleBtn);
     sidebarToggleBtn.addEventListener('click', this.openNotis);
   }
 
