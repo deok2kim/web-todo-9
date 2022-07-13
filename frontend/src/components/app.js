@@ -60,9 +60,21 @@ class App extends Component {
           </button>
         </nav>
         <section class="todos-container"></section>
-        <aside class="notifications open"></aside>
+        <aside class="notifications"></aside>
       </main>
     `;
+  }
+
+  openNotis() {
+    const notifications = $('.notifications');
+    notifications.classList.remove('close');
+    notifications.classList.add('open');
+  }
+
+  setEvent() {
+    const sidebarToggleBtn = $('.btn-toggle-sidebar');
+    console.log(sidebarToggleBtn);
+    sidebarToggleBtn.addEventListener('click', this.openNotis);
   }
 
   render() {
@@ -75,6 +87,8 @@ class App extends Component {
 
     const notifications = $('.notifications');
     new Notifications(notifications, {});
+
+    this.setEvent();
   }
 }
 

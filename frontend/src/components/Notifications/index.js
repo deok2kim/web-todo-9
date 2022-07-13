@@ -1,4 +1,5 @@
 import remove from '@/assets/remove.svg';
+import { $ } from '@/commons/utils/query-selector';
 import Notification from '@/components/Notification/index';
 import Component from '@/libs/Component';
 
@@ -26,9 +27,20 @@ class Notifications extends Component {
     this.render();
   }
 
+  closeNotis() {
+    const notifications = $('.notifications');
+    notifications.classList.remove('open');
+    notifications.classList.add('close');
+  }
+
+  setEvent() {
+    const sidebarToggleBtn = $('#btnCloseSideBar');
+    sidebarToggleBtn.addEventListener('click', this.closeNotis);
+  }
+
   template() {
     return `
-    <button>
+    <button id="btnCloseSideBar">
       <img src="${remove}" />
     </button>
     `;
@@ -36,6 +48,7 @@ class Notifications extends Component {
   render() {
     this.$container.insertAdjacentHTML('beforeend', this.template());
     this.state.notifications.forEach((noti) => new Notification(this.$container, noti));
+    this.setEvent();
   }
 }
 
