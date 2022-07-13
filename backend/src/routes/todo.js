@@ -11,8 +11,8 @@ router.get("/", getTodo);
 
 router.post("/", createTodo);
 
-router.patch("/", patchTodo);
+router.patch("/:id", patchTodo);
 
-router.delete("/", deleteTodo);
+router.delete("/:id", deleteTodo);
 
 export default router;

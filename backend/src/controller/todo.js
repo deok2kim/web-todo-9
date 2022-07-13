@@ -1,5 +1,6 @@
 import connection from "../lib/db.js";
 import { createRes } from "../utils/create-response.js";
+import { createUpdateQuery } from "../utils/create-update-query.js";
 import { statusCode } from "../utils/status-code.js";
 
 export const getTodo = async (_req, res) => {
@@ -38,7 +39,7 @@ export const createTodo = async (req, res) => {
       .query("SELECT MAX(`order`) as maxOrder from Todo;");
 
     const [rows] = orderResult;
-    const { maxOrder } = rows;
+    const { maxOrder } = rows[0];
 
     connection.query(
       "INSERT INTO Todo (`title`, `body`, `type`, `author`, `order`) VALUES(?, ?, ?, ?, ?);",
@@ -57,6 +58,50 @@ export const createTodo = async (req, res) => {
   }
 };
 
-export const deleteTodo = async (req, res) => {};
+export const deleteTodo = async (req, res) => {
+  const { id } = req.params;
+  if (!id)
+    res
+      .status(statusCode.BAD_REQUEST)
+      .send(createRes.fail(statusCode.BAD_REQUEST, "NO card id"));
 
-export const patchTodo = async (req, res) => {};
+  try {
+    await connection.promise().query("DELETE FROM `Todo` WHERE `id`= ?", [id]);
+    res.status(statusCode.OK).send(createRes.success(statusCode.OK, "삭제됨"));
+  } catch (error) {
+    console.log(error);
+    res
+      .status(statusCode.INTERNAL_ERROR)
+      .send(createRes.fail(statusCode.INTERNAL_ERROR, "서버 내부 오류"));
+  }
+};
+
+export const patchTodo = async (req, res) => {
+  const { id } = req.params;
+  if (!id)
+    res
+      .status(statusCode.BAD_REQUEST)
+      .send(createRes.fail(statusCode.BAD_REQUEST, "NO card id"));
+
+  if (!req.body)
+    res
+      .status(statusCode.BAD_REQUEST)
+      .send(createRes.fail(statusCode.BAD_REQUEST, "NO body"));
+
+  try {
+    await connection
+      .promise()
+      .query(
+        "UPDATE `Todo` SET " + createUpdateQuery(req.body) + " WHERE `id` = ?",
+        [id]
+      );
+    res
+      .status(statusCode.OK)
+      .send(createRes.success(statusCode.OK, "변경되었음."));
+  } catch (error) {
+    console.log(error);
+    res
+      .status(statusCode.INTERNAL_ERROR)
+      .send(createRes.fail(statusCode.INTERNAL_ERROR, "서버 내부 오류"));
+  }
+};
