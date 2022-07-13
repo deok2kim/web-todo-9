@@ -24,18 +24,8 @@ class DataProvider extends Component {
 
     getTodos()
       .then((result) => result.json())
-      .then(({ data: todos }) => {
-        let refinedTodos = [
-          { type: 'todo', todos: [] },
-          { type: 'onProgress', todos: [] },
-          { type: 'done', todos: [] },
-        ];
-        todos.forEach((todo) => {
-          const { type, ...restTodo } = todo;
-          refinedTodos[TODOS_TYPE_MAP[type]].todos.push({ ...restTodo });
-        });
-
-        refinedTodos.forEach((todo) => new Todos($todosContainer, todo));
+      .then(({ data: todosList }) => {
+        todosList.forEach((todos) => new Todos($todosContainer, todos));
       });
   }
 }
