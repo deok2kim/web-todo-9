@@ -3,28 +3,32 @@ import { createRes } from "../utils/create-response.js";
 import { createUpdateQuery } from "../utils/create-update-query.js";
 import { statusCode } from "../utils/status-code.js";
 
-export const getTodo = async (_req, res) => {
+export const getTodo = (_req, res) => {
   try {
-    const todoResult = await connection.promise().query("SELECT * FROM Todo;");
-    if (!todoResult)
-      res
-        .status(statusCode.INTERNAL_ERROR)
-        .send(
-          createRes.fail(
-            statusCode.INTERNAL_ERROR,
-            "something wrong in get todo list"
-          )
-        );
+    connection
+      .promise()
+      .query("SELECT * FROM Todo;")
+      .then((todoResult) => {
+        if (!todoResult)
+          res
+            .status(statusCode.INTERNAL_ERROR)
+            .send(
+              createRes.fail(
+                statusCode.INTERNAL_ERROR,
+                "something wrong in get todo list"
+              )
+            );
 
-    const [rows] = todoResult;
+        const [rows] = todoResult;
 
-    res
-      .status(statusCode.OK)
-      .send(createRes.success(statusCode.OK, "success", rows));
+        res
+          .status(statusCode.OK)
+          .send(createRes.success(statusCode.OK, "success", rows));
+      });
   } catch (error) {}
 };
 
-export const createTodo = async (req, res) => {
+export const createTodo = (req, res) => {
   const todo = req.body;
   if (!req.body)
     res
@@ -34,22 +38,25 @@ export const createTodo = async (req, res) => {
   const { title, body, author, type } = todo;
 
   try {
-    const orderResult = await connection
+    connection
       .promise()
-      .query("SELECT MAX(`order`) as maxOrder from Todo;");
+      .query("SELECT MAX(`order`) as maxOrder from Todo;")
+      .then((orderResult) => {
+        const [rows] = orderResult;
+        const { maxOrder } = rows[0];
 
-    const [rows] = orderResult;
-    const { maxOrder } = rows[0];
+        connection.query(
+          "INSERT INTO Todo (`title`, `body`, `type`, `author`, `order`) VALUES(?, ?, ?, ?, ?);",
+          [title, body, type, author, maxOrder ? maxOrder + 100 : 100],
+          (err) => {
+            if (err) throw Error(err);
 
-    connection.query(
-      "INSERT INTO Todo (`title`, `body`, `type`, `author`, `order`) VALUES(?, ?, ?, ?, ?);",
-      [title, body, type, author, maxOrder ? maxOrder + 100 : 100],
-      (err) => console.log(err)
-    );
-
-    res
-      .status(statusCode.CREATED)
-      .send(createRes.fail(statusCode.CREATED, "생성됨"));
+            res
+              .status(statusCode.CREATED)
+              .send(createRes.fail(statusCode.CREATED, "생성됨"));
+          }
+        );
+      });
   } catch (error) {
     console.log(error);
     res
@@ -58,7 +65,7 @@ export const createTodo = async (req, res) => {
   }
 };
 
-export const deleteTodo = async (req, res) => {
+export const deleteTodo = (req, res) => {
   const { id } = req.params;
   if (!id)
     res
@@ -66,8 +73,14 @@ export const deleteTodo = async (req, res) => {
       .send(createRes.fail(statusCode.BAD_REQUEST, "NO card id"));
 
   try {
-    await connection.promise().query("DELETE FROM `Todo` WHERE `id`= ?", [id]);
-    res.status(statusCode.OK).send(createRes.success(statusCode.OK, "삭제됨"));
+    connection
+      .promise()
+      .query("DELETE FROM `Todo` WHERE `id`= ?", [id])
+      .then(() => {
+        res
+          .status(statusCode.OK)
+          .send(createRes.success(statusCode.OK, "삭제됨"));
+      });
   } catch (error) {
     console.log(error);
     res
@@ -89,15 +102,17 @@ export const patchTodo = async (req, res) => {
       .send(createRes.fail(statusCode.BAD_REQUEST, "NO body"));
 
   try {
-    await connection
+    connection
       .promise()
       .query(
         "UPDATE `Todo` SET " + createUpdateQuery(req.body) + " WHERE `id` = ?",
         [id]
-      );
-    res
-      .status(statusCode.OK)
-      .send(createRes.success(statusCode.OK, "변경되었음."));
+      )
+      .then(() => {
+        res
+          .status(statusCode.OK)
+          .send(createRes.success(statusCode.OK, "변경되었음."));
+      });
   } catch (error) {
     console.log(error);
     res
