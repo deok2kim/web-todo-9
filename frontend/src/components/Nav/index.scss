@@ -1,0 +1,8 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+
+  & > h1 {
+    font-size: 32px;
+  }
+}

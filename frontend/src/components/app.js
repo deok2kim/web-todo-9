@@ -2,6 +2,8 @@ import './app.scss';
 
 import hamburger from '@/assets/hamburger.svg';
 import { $ } from '@/commons/utils/query-selector';
+import DataProvider from '@/components/DataProvider/index';
+import Nav from '@/components/Nav/index';
 import Notifications from '@/components/Notifications/index';
 import Todos from '@/components/Todos/index';
 import Component from '@/libs/Component';
@@ -52,42 +54,15 @@ class App extends Component {
 
   template() {
     return `
-      <main class="main-page">
-        <nav>
-          <h1>TO-DO LIST</h1>
-          <button class="btn-open-notifications">
-            <img src="${hamburger}" />
-          </button>
-        </nav>
-        <section class="todos-container"></section>
-        <aside class="notifications"></aside>
-      </main>
+      <main class="main-page" />
     `;
-  }
-
-  openNotifications() {
-    const notifications = $('.notifications');
-    notifications.classList.remove('close');
-    notifications.classList.add('open');
-  }
-
-  setEvent() {
-    const notificationOpenBtn = $('.btn-open-notifications');
-    notificationOpenBtn.addEventListener('click', this.openNotifications);
   }
 
   render() {
     this.$container.innerHTML = this.template();
-    const todosContainer = $('.todos-container');
-
-    dummyToods.forEach((dummyTodo) => {
-      new Todos(todosContainer, dummyTodo);
-    });
-
-    const notifications = $('.notifications');
-    new Notifications(notifications, {});
-
-    this.setEvent();
+    const $mainPage = $('.main-page');
+    new Nav($mainPage, {});
+    new DataProvider($mainPage, dummyToods);
   }
 }
 
