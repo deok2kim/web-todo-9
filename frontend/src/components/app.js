@@ -2,6 +2,7 @@ import './app.scss';
 
 import hamburger from '@/assets/hamburger.svg';
 import { $ } from '@/commons/utils/query-selector';
+import Notifications from '@/components/Notifications/index';
 import Todos from '@/components/Todos/index';
 import Component from '@/libs/Component';
 
@@ -59,7 +60,7 @@ class App extends Component {
           </button>
         </nav>
         <section class="todos-container"></section>
-        <aside class="notifications"></aside>
+        <aside class="notifications open"></aside>
       </main>
     `;
   }
@@ -71,6 +72,9 @@ class App extends Component {
     dummyToods.forEach((dummyTodo) => {
       new Todos(todosContainer, dummyTodo);
     });
+
+    const notifications = $('.notifications');
+    new Notifications(notifications, {});
   }
 }
 
