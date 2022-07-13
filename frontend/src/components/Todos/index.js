@@ -32,6 +32,17 @@ class Todos extends Component {
     return this.state?.type || '';
   }
 
+  handleAddTodo() {
+    console.log('whatthefuck');
+    const todoContainer = $(`#${this.getTodoType()} .todos__todo-container`);
+    new TodoCard(todoContainer, TodoCard.createTodoCard());
+  }
+
+  setEvent() {
+    const removeButton = $(`#${this.getTodoType()} .todos__btn-add-todo`);
+    removeButton.addEventListener('click', this.handleAddTodo.bind(this));
+  }
+
   template() {
     return `
         <section class="todos" id="${this.getTodoType()}">
@@ -41,7 +52,7 @@ class Todos extends Component {
 								<div class="todos__todo-count">${this.getTodosLength()}</div>
 							</div>
 							<div class="todos__button-wrapper">
-								<button>
+								<button class="todos__btn-add-todo">
 									<img src=${add} alt="add-todo" />
 								</button>
 								<button>
@@ -60,6 +71,8 @@ class Todos extends Component {
     this.state.todos.forEach(
       (todo) => new TodoCard(todoContainer, { inputs: todo, cardStatus: 'idle' }),
     );
+
+    this.setEvent();
   }
 }
 

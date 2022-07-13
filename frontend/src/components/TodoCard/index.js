@@ -10,6 +10,17 @@ class TodoCard extends Component {
     this.render();
   }
 
+  static createTodoCard() {
+    return {
+      inputs: {
+        title: '',
+        author: '',
+        body: '',
+      },
+      cardStatus: 'creatable',
+    };
+  }
+
   setState(nextState) {
     this.state = nextState;
     this.render();
@@ -57,17 +68,24 @@ class TodoCard extends Component {
 		`;
   }
 
-  setButton() {}
-
   template() {
     const { title, body, author } = this.state.inputs;
     return `
 			<article class="${this.getCardStyleByStatus()}">
 				<div class="card__wrapper">
-					<h3 class="card__title">${title}</p>	
-					<p class="card__body">${body}</p>
-					<p class="card__author">${author}</p>
-					${this.isCardActive() ? this.getTemplateForButton() : ''}
+					${
+            this.isCardActive()
+              ? `
+                <input class="card__title" value="${title}" placeholder="제목을 입력하세요" />
+                <input class="card__body" value="${body}" placeholder="내용을 입력하세요" />
+                ${this.getTemplateForButton()}
+              `
+              : `
+                <h3 class="card__title">${title}</h3>	
+                <p class="card__body">${body}</p>
+                <p class="card__author">${author}</p>
+              `
+          }
 				</div>
 				${
           this.isCardActive()
