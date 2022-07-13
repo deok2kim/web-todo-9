@@ -23,25 +23,24 @@
 // 노티 슬라이드 애니매이션
 @keyframes slideIn{
   from{
-    right: -100%;
+    transform: translateX(452px);
   }
   to{
-    right: 0%;
+    transform: translateX(0);
   }
 }
 @keyframes slideOut{
   from{
-    rigth: 0%;
+    transform: translateX(0);
   }
   to{
-    right: -100%;
+    transform: translateX(452px);
   }
 }
 
 .notifications {
   position: absolute;
   visibility: hidden;
-  width: 0;
   top: 0;
   right: 0;
   height: 100%;
@@ -60,6 +59,7 @@
     animation-name: slideOut;
     animation-fill-mode: both;
   }
+  
   &.open {
     visibility: visible;
     animation-duration: 750ms;
