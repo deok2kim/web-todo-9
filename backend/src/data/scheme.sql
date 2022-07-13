@@ -3,12 +3,12 @@ CREATE DATABASE week2;
 USE week2;
 
 CREATE TABLE Todo (
-  `id` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(20) NOT NULL,
   `body` VARCHAR(255) NOT NULL,
-  `author` VARCHAR(20),
   `type` VARCHAR(10) NOT NULL, 
-  `order` INT NOT NULL, 
+  `author` VARCHAR(20),
+  `order` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   -- type can be "todo" | "onProgress" | "done"
   PRIMARY KEY(id)
 );

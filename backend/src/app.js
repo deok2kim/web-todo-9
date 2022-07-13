@@ -15,4 +15,8 @@ app.use("/", baseRouter);
 
 app.listen(PORT);
 
+console.log("-------------");
+console.log("listeneing ... " + PORT);
+console.log("-------------");
+
 export default app;
