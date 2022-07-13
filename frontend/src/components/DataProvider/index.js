@@ -1,6 +1,5 @@
 import { $ } from '@/commons/utils/query-selector';
 import Todos from '@/components/Todos/index';
-import { TODOS_TYPE_MAP } from '@/constants/mapper';
 import { getTodos } from '@/libs/api';
 import Component from '@/libs/Component';
 
@@ -13,7 +12,11 @@ class DataProvider extends Component {
 
   template() {
     return `
-      <section class="todos-container"></section>
+      <section class="todos-container">
+        <section class="todos" id="todo"></section>
+        <section class="todos" id="onProgress"></section>
+        <section class="todos" id="done"></section>
+      </section>
       <aside class="notifications"></aside>
     `;
   }
@@ -25,7 +28,7 @@ class DataProvider extends Component {
     getTodos()
       .then((result) => result.json())
       .then(({ data: todosList }) => {
-        todosList.forEach((todos) => new Todos($todosContainer, todos));
+        todosList.forEach((todos, index) => new Todos($todosContainer.children[index], todos));
       });
   }
 }

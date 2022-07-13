@@ -5,18 +5,8 @@ import remove from '@/assets/remove.svg';
 import { $ } from '@/commons/utils/query-selector';
 import TodoCard from '@/components/TodoCard/index';
 import { TODOS_TITLE_MAP } from '@/constants/mapper';
+import { createTodo } from '@/libs/api';
 import Component from '@/libs/Component';
-
-/**
- * @Todos state
- *
- * id: number;
- * title: string;
- * body: string;
- * author: string;
- * type: 'done' | 'onProgress' | 'todo';
- * order: number;
- */
 
 class Todos extends Component {
   constructor($container, initialState) {
@@ -32,45 +22,65 @@ class Todos extends Component {
     return this.state?.type || '';
   }
 
-  handleAddTodo() {
-    console.log('whatthefuck');
+  handleCreate() {
+    const currentActiveCard = $(`#${this.getTodoType()} .card.active`);
+    if (currentActiveCard) return;
+
     const todoContainer = $(`#${this.getTodoType()} .todos__todo-container`);
-    new TodoCard(todoContainer, TodoCard.createTodoCard());
+    const newCardInfo = TodoCard.createTodoCard();
+    new TodoCard(todoContainer, newCardInfo, this.setTodos.bind(this));
   }
 
   setEvent() {
     const removeButton = $(`#${this.getTodoType()} .todos__btn-add-todo`);
-    removeButton.addEventListener('click', this.handleAddTodo.bind(this));
+    removeButton.addEventListener('click', this.handleCreate.bind(this));
+  }
+
+  setTodos(actionType, cardInfo) {
+    const { type } = this.state;
+    switch (actionType) {
+      case '등록':
+        this.setState({ ...this.state, todos: [...this.state.todos, cardInfo] });
+        createTodo(type, cardInfo);
+        break;
+    }
   }
 
   template() {
     return `
-        <section class="todos" id="${this.getTodoType()}">
-					<div class="todos__header">
-							<div>
-								<h2 class="todos__title">${TODOS_TITLE_MAP[this.getTodoType()]}</h2> 
-								<div class="todos__todo-count">${this.getTodosLength()}</div>
-							</div>
-							<div class="todos__button-wrapper">
-								<button class="todos__btn-add-todo">
-									<img src=${add} alt="add-todo" />
-								</button>
-								<button>
-									<img src=${remove} alt="remove-todo" />
-								</button>
-							</div>
-            </div>
-            <div class="todos__todo-container"></div>
-        </section>
+        <div class="todos__header">
+          <div>
+            <h2 class="todos__title">${TODOS_TITLE_MAP[this.getTodoType()]}</h2> 
+            <div class="todos__todo-count">${this.getTodosLength()}</div>
+          </div>
+          <div class="todos__button-wrapper">
+            <button class="todos__btn-add-todo">
+              <img src=${add} alt="add-todo" />
+            </button>
+            <button>
+              <img src=${remove} alt="remove-todo" />
+            </button>
+          </div>
+        </div>
+        <div class="todos__todo-container"></div>
     `;
   }
 
-  render() {
-    this.$container.insertAdjacentHTML('beforeend', this.template());
+  renderChildTodo() {
     const todoContainer = $(`#${this.getTodoType()} .todos__todo-container`);
     this.state.todos.forEach(
-      (todo) => new TodoCard(todoContainer, { inputs: todo, cardStatus: 'idle' }),
+      (todo) =>
+        new TodoCard(
+          todoContainer,
+          { cardInfo: todo, cardStatus: 'idle' },
+          this.setTodos.bind(this),
+        ),
     );
+  }
+
+  render() {
+    this.$container.innerHTML = this.template();
+    this.renderChildTodo();
 
     this.setEvent();
   }
