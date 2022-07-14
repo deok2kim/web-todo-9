@@ -116,9 +116,9 @@ class TodoCard extends Component {
   }
 
   template() {
-    const { title, body, author, id } = this.state.cardInfo;
+    const { title, body, author, id, order } = this.state.cardInfo;
     return `
-			<article id="card-${id}" class="${this.getCardStyleByStatus()}">
+			<article id="card-${id}" class="${this.getCardStyleByStatus()}" style="order:${order}">
 				<div class="card__wrapper">
 					${
             this.isCardActive()
