@@ -18,7 +18,7 @@ class Notification extends Component {
   setText(todoLogData) {
     const obj = {};
     const { action } = todoLogData;
-    Object.entries(todoLogData).forEach((kv) => Object.assign(obj, { [kv[0]]: `<b>${kv[1]}</b>` }));
+    Object.entries(todoLogData).forEach(([key, value]) => Object.assign(obj, { [key]: `<b>${value}</b>` }));
     const { prevTitle, nextTitle, prevType, nextType } = obj;
 
     switch (action) {
