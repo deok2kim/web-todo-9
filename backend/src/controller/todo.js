@@ -8,7 +8,7 @@ const TODO_TYPE_LIST = ["todo", "onProgress", "done"];
 const getTodoByType = (type) => {
   return connection
     .promise()
-    .query('SELECT * FROM Todo WHERE `type`="' + type + '";');
+    .query('SELECT `title`, `author`, `body`, `type`, `order`, `id` FROM `Todo` WHERE isDeleted = 0 AND `type`= ?;', [type])
 };
 
 export const getTodo = (_req, res) => {
