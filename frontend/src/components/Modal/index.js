@@ -10,7 +10,7 @@ class Modal extends Component {
 
   template() {
     return `
-			<section class="modal on" id="modal">
+			<section class="modal" id="modal">
 				<div class="modal__content">
 					<p class="modal__title">선택한 카드를 삭제할까요?</p>
 					<div class="modal__button-wrapper">
