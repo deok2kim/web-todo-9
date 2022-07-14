@@ -11,6 +11,8 @@ import Component from '@/libs/Component';
 class Todos extends Component {
   constructor($container, initialState) {
     super($container, initialState);
+
+    this.currentActiveCard = null;
     this.render();
   }
 
@@ -23,12 +25,12 @@ class Todos extends Component {
   }
 
   handleCreate() {
-    const currentActiveCard = $(`#${this.getTodoType()} .card.active`);
-    if (currentActiveCard) return;
-
+    if (this.currentActiveCard) return;
     const todoContainer = $(`#${this.getTodoType()} .todos__todo-container`);
     const newCardInfo = TodoCard.createTodoCard();
     new TodoCard(todoContainer, newCardInfo, this.setTodos.bind(this));
+
+    this.currentActiveCard = $(`#${this.getTodoType()} .card.active`);
   }
 
   setEvent() {
@@ -43,6 +45,9 @@ class Todos extends Component {
         this.setState({ ...this.state, todos: [...this.state.todos, cardInfo] });
         createTodo(type, cardInfo);
         break;
+      case '취소':
+        this.currentActiveCard.remove();
+        this.currentActiveCard = null;
     }
   }
 

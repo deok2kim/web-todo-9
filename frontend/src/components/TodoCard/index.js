@@ -82,7 +82,12 @@ class TodoCard extends Component {
       this.setTodos(cardStatus === 'creatable' ? '등록' : '수정', cardInfo);
     }
 
-    if (targetClassName === 'btn normal') this.setTodos('삭제', cardInfo);
+    if (targetClassName === 'btn normal') {
+      if (cardStatus === 'editable') this.setCardStatus('idle');
+      if (cardStatus === 'creatable') {
+        this.setTodos('취소', cardInfo);
+      }
+    }
   }
 
   handleChange(e) {
@@ -98,7 +103,7 @@ class TodoCard extends Component {
     });
   }
 
-  handleDoubleClick(e) {
+  handleDoubleClick() {
     this.setCardStatus('editable');
   }
 
@@ -119,7 +124,7 @@ class TodoCard extends Component {
             this.isCardActive()
               ? `
                 <input class="card__title" name="title" value="${title}" placeholder="제목을 입력하세요" />
-                <textarea class="card__body" name="body" placeholder="내용을 입력하세요">${body}</textarea>
+                <textarea class="card__body"  name="body" placeholder="내용을 입력하세요">${body}</textarea>
                 ${this.getTemplateForButton()}
               `
               : `
