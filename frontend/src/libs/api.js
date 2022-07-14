@@ -20,3 +20,17 @@ export const createTodo = (todosType, cardInfo) => {
     },
   });
 };
+
+export const updateTodo = (nextTodo) => {
+  const { id } = nextTodo;
+  return fetch(`${BASE_URL}/todo/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      title: nextTodo.title,
+      body: nextTodo.body,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};

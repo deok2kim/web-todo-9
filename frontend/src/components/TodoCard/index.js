@@ -92,7 +92,7 @@ class TodoCard extends Component {
 
   handleChange(e) {
     const target = e.target;
-    if (!(target instanceof HTMLInputElement)) return;
+    if (!(target instanceof HTMLInputElement) && !(target instanceof HTMLTextAreaElement)) return;
 
     this.setState({
       ...this.state,
