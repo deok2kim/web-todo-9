@@ -29,6 +29,12 @@
   &.removable {
     background-color: #ffeeec;
     border: 1px solid #ff4343;
+
+    .card__btn-remove {
+      path {
+        fill: red;
+      }
+    }
   }
 
   &.floating {

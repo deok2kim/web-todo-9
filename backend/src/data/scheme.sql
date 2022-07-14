@@ -16,9 +16,10 @@ CREATE TABLE Todo (
 
 CREATE TABLE Noti (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `action` JSON NOT NULL,
+  `action` varchar(10),
+  `payload` JSON NOT NULL,
   `todoId` INT,
-  `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (`todoId`) REFERENCES `Todo` (`id`) ON DELETE CASCADE,
+  `createAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`todoId`) REFERENCES `Todo` (`id`),
   PRIMARY KEY(id)
 );

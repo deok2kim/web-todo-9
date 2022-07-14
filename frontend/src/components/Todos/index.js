@@ -5,7 +5,7 @@ import remove from '@/assets/remove.svg';
 import { $ } from '@/commons/utils/query-selector';
 import TodoCard from '@/components/TodoCard/index';
 import { TODOS_TITLE_MAP } from '@/constants/mapper';
-import { createTodo, updateTodo } from '@/libs/api';
+import { createTodo, deleteTodo, updateTodo } from '@/libs/api';
 import Component from '@/libs/Component';
 
 class Todos extends Component {
@@ -40,6 +40,7 @@ class Todos extends Component {
 
   setTodos(actionType, cardInfo) {
     const { type } = this.state;
+    const targetTodoIndex = this.state.todos.findIndex((todo) => todo.id === cardInfo.id);
     switch (actionType) {
       case '등록':
         createTodo(type, cardInfo)
@@ -57,7 +58,6 @@ class Todos extends Component {
         this.currentActiveCard = null;
         return;
       case '수정':
-        const targetTodoIndex = this.state.todos.findIndex((todo) => todo.id === cardInfo.id);
         if (targetTodoIndex === -1) return;
         const nextTodos = [
           ...this.state.todos.slice(0, targetTodoIndex),
@@ -67,6 +67,11 @@ class Todos extends Component {
 
         this.setState({ ...this.state, todos: nextTodos });
         updateTodo(cardInfo);
+        return;
+      case '삭제':
+        const afterDeletionTodos = this.state.todos.filter((todo) => todo.id !== cardInfo.id);
+        this.setState({ ...this.state, todos: afterDeletionTodos });
+        deleteTodo(cardInfo.id);
         return;
     }
   }
@@ -105,6 +110,7 @@ class Todos extends Component {
 
   render() {
     this.$container.innerHTML = this.template();
+    this.currentActiveCard = null;
     this.renderChildTodo();
 
     this.setEvent();

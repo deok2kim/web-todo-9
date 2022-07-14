@@ -41,5 +41,12 @@ export const updateTodo = (nextTodo) => {
       'Content-Type': 'application/json',
     },
   });
-}
+};
 
+export const deleteTodo = (targetId) => {
+  if (!targetId) return;
+
+  return fetch(`${BASE_URL}/todo/${targetId}`, {
+    method: 'DELETE',
+  });
+};
