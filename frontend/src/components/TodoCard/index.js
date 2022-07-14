@@ -1,5 +1,7 @@
 import './index.scss';
 
+import shortid from 'shortid';
+
 import remove from '@/assets/remove.svg';
 import { $ } from '@/commons/utils/query-selector';
 import { safelyInsertHTML } from '@/commons/utils/safelyInsertHTML';
@@ -18,7 +20,7 @@ class TodoCard extends Component {
         title: '',
         author: '김더미',
         body: '',
-        id: new Date().getTime(),
+        id: shortid.generate(),
       },
       cardStatus: 'creatable',
     };
