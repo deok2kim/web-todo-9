@@ -32,7 +32,7 @@ class Notification extends Component {
         return `${nextTitle}을/를 ${prevType}에서 ${nextType}으로 ${ACTION_MAPPER[action]}하였습니다.`;
       default:
         `알 수 없는 오류`;
-        break;
+        return;
     }
   }
 
