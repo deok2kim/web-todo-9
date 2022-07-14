@@ -3,11 +3,7 @@ import { createRes } from "../utils/create-response.js";
 import { createUpdateQuery } from "../utils/create-update-query.js";
 import { statusCode } from "../utils/status-code.js";
 
-const TODO_MAPPER = {
-  0: "todo",
-  1: "onProgress",
-  2: "done",
-};
+const TODO_TYPE_LIST = ["todo", "onProgress", "done"];
 
 const getTodoByType = (type) => {
   return connection
@@ -17,13 +13,13 @@ const getTodoByType = (type) => {
 
 export const getTodo = (_req, res) => {
   try {
-    const promises = ["todo", "onProgress", "done"].map(getTodoByType);
+    const promises = TODO_TYPE_LIST.map(getTodoByType);
     Promise.all(promises).then((completedList) => {
       let refinedTodo = [];
 
       completedList.forEach(([row], index) => {
         refinedTodo[index] = {
-          type: TODO_MAPPER[index],
+          type: TODO_TYPE_LIST[index],
           todos: row,
         };
       });
