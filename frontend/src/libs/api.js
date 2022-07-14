@@ -24,7 +24,7 @@ export const getNotifications = () => {
   return fetch(`${BASE_URL}/noti`, {
     method: 'GET',
     headers: {
-      'Contetn-Type': 'application/json',
+      'Content-Type': 'application/json',
     }
   });
 }
