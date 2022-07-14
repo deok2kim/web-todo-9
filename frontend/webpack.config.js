@@ -1,5 +1,6 @@
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const path = require('path');
 
@@ -69,8 +70,9 @@ module.exports = {
   },
   plugins: [
     new htmlWebpackPlugin({
-	    template: path.resolve(__dirname, '../backend/public', 'index.html'),
+      template: path.resolve(__dirname, '../backend/public', 'index.html'),
     }),
+    new CleanWebpackPlugin(),
   ],
   devServer: {
     hot: true,

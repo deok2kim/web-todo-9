@@ -43,6 +43,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "clean-webpack-plugin": "^4.0.0",
     "http-server": "^14.1.1",
     "shortid": "^2.2.16"
   }
