@@ -7,7 +7,7 @@ export const getNoti = async (req, res) => {
   try {
     connection
       .promise()
-      .query("select * from `Noti` limit ?", [LIMIT])
+      .query("select Noti.id, Noti.action, Noti.createdAt, Todo.title, Todo.author from `Noti` JOIN `Todo` ON Todo.id = Noti.todoId limit ?", [LIMIT])
       .then((notiResult) => {
         const [rows] = notiResult;
         res
