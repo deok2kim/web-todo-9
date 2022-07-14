@@ -13,8 +13,12 @@
     border: 1px solid $blue;
 
     input.card__title,
-    input.card__body {
+    textarea.card__body {
+      display: block;
+      width: 100%;
       border: none;
+
+      resize: none;
 
       &:focus {
         outline: none;

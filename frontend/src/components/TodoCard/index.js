@@ -98,11 +98,16 @@ class TodoCard extends Component {
     });
   }
 
+  handleDoubleClick(e) {
+    this.setCardStatus('editable');
+  }
+
   setEvent() {
     const { id } = this.state.cardInfo;
     const currentCard = $(`#card-${id}`);
     currentCard.addEventListener('change', this.handleChange.bind(this));
     currentCard.addEventListener('click', this.handleClick.bind(this));
+    currentCard.addEventListener('dblclick', this.handleDoubleClick.bind(this));
   }
 
   template() {
@@ -114,7 +119,7 @@ class TodoCard extends Component {
             this.isCardActive()
               ? `
                 <input class="card__title" name="title" value="${title}" placeholder="제목을 입력하세요" />
-                <input class="card__body" name="body" value="${body}" placeholder="내용을 입력하세요" />
+                <textarea class="card__body" name="body" placeholder="내용을 입력하세요">${body}</textarea>
                 ${this.getTemplateForButton()}
               `
               : `
