@@ -1,5 +1,4 @@
-const BASE_URL =
-  process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'production-url';
+const BASE_URL = 'http://ec2-15-165-8-120.ap-northeast-2.compute.amazonaws.com';
 
 export const getTodos = () => {
   return fetch(`${BASE_URL}/todo`, {
@@ -26,6 +25,21 @@ export const getNotifications = () => {
     method: 'GET',
     headers: {
       'Contetn-Type': 'application/json',
+    }
+  });
+}
+  
+export const updateTodo = (nextTodo) => {
+  const { id } = nextTodo;
+  return fetch(`${BASE_URL}/todo/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      title: nextTodo.title.trim(),
+      body: nextTodo.body.trim(),
+    }),
+    headers: {
+      'Content-Type': 'application/json',
     },
   });
-};
+}
+

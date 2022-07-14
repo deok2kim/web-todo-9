@@ -9,7 +9,7 @@ module.exports = {
   mode: isProductionMode ? 'production' : 'development',
   entry: path.resolve(__dirname, './src', 'index.js'),
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, '../backend/public'),
     filename: '[hash].js',
     clean: true,
   },
@@ -69,7 +69,7 @@ module.exports = {
   },
   plugins: [
     new htmlWebpackPlugin({
-      template: path.resolve(__dirname, 'src', 'index.html'),
+	    template: path.resolve(__dirname, '../backend/public', 'index.html'),
     }),
   ],
   devServer: {
