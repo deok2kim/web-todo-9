@@ -3,6 +3,18 @@ const BASE_URL =
 
 export const getTodos = () => {
   return fetch(`${BASE_URL}/todo`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
+export const createTodo = (todosType, cardInfo) => {
+  const { _id, ...todoInfo } = cardInfo;
+  return fetch(`${BASE_URL}/todo`, {
+    method: 'POST',
+    body: JSON.stringify({ ...todoInfo, type: todosType }),
     headers: {
       'Content-Type': 'application/json',
     },

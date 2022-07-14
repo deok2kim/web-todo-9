@@ -4,7 +4,10 @@ class Component {
     this.state = initialState;
   }
 
-  setState() {}
+  setState(nextState) {
+    this.state = nextState;
+    this.render();
+  }
 
   setEvent() {}
 

@@ -11,6 +11,15 @@
 
   &.active {
     border: 1px solid $blue;
+
+    input.card__title,
+    input.card__body {
+      border: none;
+
+      &:focus {
+        outline: none;
+      }
+    }
   }
 
   &.removable {

@@ -1,18 +1,36 @@
 import './index.scss';
 
+import shortid from 'shortid';
+
 import remove from '@/assets/remove.svg';
+import { $ } from '@/commons/utils/query-selector';
+import { safelyInsertHTML } from '@/commons/utils/safelyInsertHTML';
 import Component from '@/libs/Component';
 
 class TodoCard extends Component {
-  constructor($container, initialState) {
+  constructor($container, initialState, setTodos) {
     super($container, initialState);
-
+    this.setTodos = setTodos;
     this.render();
   }
 
-  setState(nextState) {
-    this.state = nextState;
-    this.render();
+  static createTodoCard() {
+    return {
+      cardInfo: {
+        title: '',
+        author: '김더미',
+        body: '',
+        id: shortid.generate(),
+      },
+      cardStatus: 'creatable',
+    };
+  }
+
+  setCardStatus(nextStatus) {
+    this.setState({
+      ...this.state,
+      cardStatus: nextStatus,
+    });
   }
 
   getCardStyleByStatus() {
@@ -51,23 +69,60 @@ class TodoCard extends Component {
     const { cardStatus } = this.state;
     return `
 			<div class="button-wrapper">
-				<button class="btn normal">취소</button>
+        <button class="btn normal">취소</button>
 				<button class="btn accent">${cardStatus === 'creatable' ? '등록' : '수정'}</button>
 			</div>
 		`;
   }
 
-  setButton() {}
+  handleClick(e) {
+    const { cardStatus, cardInfo } = this.state;
+    const targetClassName = e.target.className;
+    if (targetClassName === 'btn accent') {
+      this.setTodos(cardStatus === 'creatable' ? '등록' : '수정', cardInfo);
+    }
+
+    if (targetClassName === 'btn normal') this.setTodos('삭제', cardInfo);
+  }
+
+  handleChange(e) {
+    const target = e.target;
+    if (!(target instanceof HTMLInputElement)) return;
+
+    this.setState({
+      ...this.state,
+      cardInfo: {
+        ...this.state.cardInfo,
+        [target.name]: target.value,
+      },
+    });
+  }
+
+  setEvent() {
+    const { id } = this.state.cardInfo;
+    const currentCard = $(`#card-${id}`);
+    currentCard.addEventListener('change', this.handleChange.bind(this));
+    currentCard.addEventListener('click', this.handleClick.bind(this));
+  }
 
   template() {
-    const { title, body, author } = this.state.inputs;
+    const { title, body, author, id } = this.state.cardInfo;
     return `
-			<article class="${this.getCardStyleByStatus()}">
+			<article id="card-${id}" class="${this.getCardStyleByStatus()}">
 				<div class="card__wrapper">
-					<h3 class="card__title">${title}</p>	
-					<p class="card__body">${body}</p>
-					<p class="card__author">${author}</p>
-					${this.isCardActive() ? this.getTemplateForButton() : ''}
+					${
+            this.isCardActive()
+              ? `
+                <input class="card__title" name="title" value="${title}" placeholder="제목을 입력하세요" />
+                <input class="card__body" name="body" value="${body}" placeholder="내용을 입력하세요" />
+                ${this.getTemplateForButton()}
+              `
+              : `
+                <h3 class="card__title">${title}</h3>	
+                <p class="card__body">${body}</p>
+                <p class="card__author">${author}</p>
+              `
+          }
 				</div>
 				${
           this.isCardActive()
@@ -83,7 +138,13 @@ class TodoCard extends Component {
   }
 
   render() {
-    this.$container.insertAdjacentHTML('beforeend', this.template());
+    const {
+      cardInfo: { id },
+    } = this.state;
+
+    safelyInsertHTML(this.$container, 'afterbegin', `#card-${id}`, this.template());
+
+    this.setEvent();
   }
 }
 
