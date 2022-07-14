@@ -119,9 +119,20 @@ class TodoCard extends Component {
     this.setCardStatus('editable');
   }
 
+  handleHover(isHover) {
+    const nextState = isHover ? 'removable' : 'idle';
+    return (e) => {
+      const target = e.target;
+      if (target && this.state.cardStatus !== nextState) this.setCardStatus(nextState);
+    };
+  }
+
   setEvent() {
     const { id } = this.state.cardInfo;
     const currentCard = $(`#card-${id}`);
+    const buttonRef = currentCard.querySelector('button.card__btn-remove');
+    buttonRef.addEventListener('mouseenter', this.handleHover(true));
+    buttonRef.addEventListener('mouseleave', this.handleHover(false));
     currentCard.addEventListener('input', this.handleChange.bind(this));
     currentCard.addEventListener('click', this.handleClick.bind(this));
     currentCard.addEventListener('dblclick', this.handleDoubleClick.bind(this));
@@ -152,7 +163,9 @@ class TodoCard extends Component {
             ? ''
             : `
 								<button class="card__btn-remove">
-									<img src=${remove} alt="remove-btn" />
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.5 17.25L6.75 16.5L11.25 12L6.75 7.5L7.5 6.75L12 11.25L16.5 6.75L17.25 7.5L12.75 12L17.25 16.5L16.5 17.25L12 12.75L7.5 17.25Z" fill="#828282"/>
+                  </svg>
 								</button>
 							`
         }

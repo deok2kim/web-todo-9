@@ -12,7 +12,7 @@ module.exports = {
   rules: {
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
-    'no-unused-vars': ['error', { varsIgnorePattern: '_' }],
+    'no-unused-vars': ['error', { varsIgnorePattern: '_', argsIgnorePattern: '_' }],
     'no-case-declarations': 'off',
   },
   plugins: ['simple-import-sort'],
