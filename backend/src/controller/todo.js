@@ -1,3 +1,4 @@
+import pool from "../lib/db.js";
 import connection from "../lib/db.js";
 import { createRes } from "../utils/create-response.js";
 import { createUpdateQuery } from "../utils/create-update-query.js";
@@ -8,7 +9,10 @@ const TODO_TYPE_LIST = ["todo", "onProgress", "done"];
 const getTodoByType = (type) => {
   return connection
     .promise()
-    .query('SELECT `title`, `author`, `body`, `type`, `order`, `id` FROM `Todo` WHERE isDeleted = 0 AND `type`= ?;', [type])
+    .query(
+      "SELECT `title`, `author`, `body`, `type`, `order`, `id` FROM `Todo` WHERE isDeleted = 0 AND `type`= ?;",
+      [type]
+    );
 };
 
 export const getTodo = (_req, res) => {
@@ -51,12 +55,14 @@ export const createTodo = (req, res) => {
         connection.query(
           "INSERT INTO Todo (`title`, `body`, `type`, `author`, `order`) VALUES(?, ?, ?, ?, ?);",
           [title, body, type, author, maxOrder ? maxOrder + 100 : 100],
-          (err) => {
+          (err, result) => {
             if (err) throw Error(err);
-
+            const { insertId } = result;
             res
               .status(statusCode.CREATED)
-              .send(createRes.fail(statusCode.CREATED, "생성됨"));
+              .send(
+                createRes.fail(statusCode.CREATED, "생성됨", { id: insertId })
+              );
           }
         );
       });
@@ -108,7 +114,7 @@ export const patchTodo = async (req, res) => {
     connection
       .promise()
       .query(
-        "UPDATE `Todo` SET " + createUpdateQuery(req.body) + " WHERE `id` = ?",
+        "UPDATE `Todo` SET " + createUpdateQuery(req.body) + " WHERE `id` = ?;",
         [id]
       )
       .then(() => {

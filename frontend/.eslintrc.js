@@ -13,6 +13,7 @@ module.exports = {
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
     'no-unused-vars': ['error', { varsIgnorePattern: '_' }],
+    'no-case-declarations': 'off',
   },
   plugins: ['simple-import-sort'],
   settings: {

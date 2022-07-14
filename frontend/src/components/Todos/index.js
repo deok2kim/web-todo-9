@@ -5,12 +5,14 @@ import remove from '@/assets/remove.svg';
 import { $ } from '@/commons/utils/query-selector';
 import TodoCard from '@/components/TodoCard/index';
 import { TODOS_TITLE_MAP } from '@/constants/mapper';
-import { createTodo } from '@/libs/api';
+import { createTodo, updateTodo } from '@/libs/api';
 import Component from '@/libs/Component';
 
 class Todos extends Component {
   constructor($container, initialState) {
     super($container, initialState);
+
+    this.currentActiveCard = null;
     this.render();
   }
 
@@ -23,12 +25,12 @@ class Todos extends Component {
   }
 
   handleCreate() {
-    const currentActiveCard = $(`#${this.getTodoType()} .card.active`);
-    if (currentActiveCard) return;
-
+    if (this.currentActiveCard) return;
     const todoContainer = $(`#${this.getTodoType()} .todos__todo-container`);
     const newCardInfo = TodoCard.createTodoCard();
     new TodoCard(todoContainer, newCardInfo, this.setTodos.bind(this));
+
+    this.currentActiveCard = $(`#${this.getTodoType()} .card.active`);
   }
 
   setEvent() {
@@ -40,9 +42,32 @@ class Todos extends Component {
     const { type } = this.state;
     switch (actionType) {
       case '등록':
-        this.setState({ ...this.state, todos: [...this.state.todos, cardInfo] });
-        createTodo(type, cardInfo);
-        break;
+        createTodo(type, cardInfo)
+          .then((res) => res.json())
+          .then(({ data: { id } }) => {
+            this.setState({
+              ...this.state,
+              todos: [...this.state.todos, { ...cardInfo, id }],
+            });
+          });
+
+        return;
+      case '취소':
+        this.currentActiveCard.remove();
+        this.currentActiveCard = null;
+        return;
+      case '수정':
+        const targetTodoIndex = this.state.todos.findIndex((todo) => todo.id === cardInfo.id);
+        if (targetTodoIndex === -1) return;
+        const nextTodos = [
+          ...this.state.todos.slice(0, targetTodoIndex),
+          cardInfo,
+          ...this.state.todos.slice(targetTodoIndex + 1),
+        ];
+
+        this.setState({ ...this.state, todos: nextTodos });
+        updateTodo(cardInfo);
+        return;
     }
   }
 

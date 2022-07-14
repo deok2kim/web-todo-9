@@ -15,8 +15,9 @@ body {
   height: 40px;
   border-radius: 6px;
 
-  &:disabled {
-    opacity: 0.6;
+  &.disabled {
+    opacity: 0.4;
+    color: $white;
   }
 }
 
