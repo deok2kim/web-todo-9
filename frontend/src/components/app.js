@@ -38,7 +38,7 @@ class App extends Component {
       {},
       this.setNotificationsOpenState.bind(this),
     );
-    new Modal($mainPage);
+    // new Modal($mainPage);
   }
 }
 
