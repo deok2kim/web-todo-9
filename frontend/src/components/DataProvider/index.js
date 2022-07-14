@@ -24,6 +24,9 @@ class DataProvider extends Component {
       <aside class="notifications"></aside>
     `;
   }
+  refetchNotifications() {
+    this.$notificationsComponent.refetch();
+  }
 
   renderTodos() {
     const $todosContainer = $('.todos-container');
@@ -31,7 +34,10 @@ class DataProvider extends Component {
     getTodos()
       .then((result) => result.json())
       .then(({ data: todosList }) => {
-        todosList.forEach((todos, index) => new Todos($todosContainer.children[index], todos));
+        todosList.forEach(
+          (todos, index) =>
+            new Todos($todosContainer.children[index], todos, this.refetchNotifications.bind(this)),
+        );
       });
   }
 

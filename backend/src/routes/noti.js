@@ -4,6 +4,4 @@ const router = express.Router();
 
 router.get("/", getNoti);
 
-router.post("/", createNoti);
-
 export default router;

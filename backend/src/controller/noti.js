@@ -8,7 +8,7 @@ export const getNoti = async (req, res) => {
     connection
       .promise()
       .query(
-        "select Noti.id, Noti.action, Noti.payload, Noti.createdAt, Todo.title, Todo.type, Todo.author from `Noti` JOIN `Todo` ON Todo.id = Noti.todoId limit ?",
+        "select Noti.id, Noti.action, Noti.payload, Noti.createdAt, Todo.title, Todo.type, Todo.author from `Noti` JOIN `Todo` ON Todo.id = Noti.todoId order by id desc limit ?",
         [LIMIT]
       )
       .then((notiResult) => {
@@ -25,28 +25,20 @@ export const getNoti = async (req, res) => {
   }
 };
 
-export const createNoti = async (req, res) => {
+export const createNoti = async (data) => {
   try {
-    const { action, payload, todoId } = req.body;
+    const { action, payload, todoId } = data;
     if (!action || !todoId) {
       throw new Error("action 또는 todoId 값이 없습니다.");
     }
 
-    connection
+    return connection
       .promise()
       .query(
         "insert into Noti(`action`, `payload`, `todoId`) values (?, ?, ?)",
         [action, JSON.stringify(payload), todoId]
-      )
-      .then(() => {
-        res
-          .status(statusCode.OK)
-          .send(createRes.success(statusCode.OK, "생성됨"));
-      });
+      );
   } catch (e) {
     console.error(e);
-    res
-      .status(statusCode.INTERNAL_ERROR)
-      .send(createRes.fail(statusCode.INTERNAL_ERROR, "서버 내부 오류"));
   }
 };

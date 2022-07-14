@@ -51,6 +51,7 @@
   backdrop-filter: blur(4prgba (12, 11, 11, 0.5));
   width: 452px;
   padding: 44px 80px 0 40px;
+  overflow-y: scroll;
 
   &.close {
     visibility: visible;
