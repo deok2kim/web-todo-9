@@ -70,7 +70,7 @@ class TodoCard extends Component {
     return `
 			<div class="button-wrapper">
         <button class="btn normal">취소</button>
-				<button class="btn accent">${cardStatus === 'creatable' ? '등록' : '수정'}</button>
+				<button class="btn accent disabled">${cardStatus === 'creatable' ? '등록' : '수정'}</button>
 			</div>
 		`;
   }
