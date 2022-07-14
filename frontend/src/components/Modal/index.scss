@@ -1,0 +1,62 @@
+.modal {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	z-index: -1000;
+	width: 1440px;
+	height: 1024px;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+	&__content {
+		height: 138px;
+		width: 400px;
+		box-sizing: border-box;
+		background-color: $white;
+		box-shadow: 0 1px 7px rgba(0, 0, 0, 0.5);
+		opacity: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 24px;
+		padding: 24px;
+		border-radius: 6px;
+		box-shadow: 0px 0px 4px rgba(204, 204, 204, 0.5), 0px 2px 4px rgba(0, 0, 0, 0.25);
+		backdrop-filter: blur(4px);
+	}
+
+	&__title {
+		font-weight: 400;
+		font-size: 18px;
+		line-height: 26px;
+		color: $black;
+	}
+
+	&__button-wrapper {
+		display: flex;
+		justify-content: end;
+		gap: 8px;
+	}
+
+	&__button {
+		width: 134px;
+		height: 40px;
+		border-radius: 6px;
+		color: #828282;
+		background-color: #E0E0E0;
+	}
+
+	&__button.accent {
+		color: $white;
+		background-color: $blue;
+	}
+	
+
+	&.on {
+		z-index: 1000;
+	}
+}

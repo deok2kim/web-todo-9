@@ -2,6 +2,7 @@ import './app.scss';
 
 import { $ } from '@/commons/utils/query-selector';
 import DataProvider from '@/components/DataProvider/index';
+import Modal from '@/components/Modal/index';
 import Nav from '@/components/Nav/index';
 import Component from '@/libs/Component';
 
@@ -37,6 +38,7 @@ class App extends Component {
       {},
       this.setNotificationsOpenState.bind(this),
     );
+    new Modal($mainPage);
   }
 }
 
