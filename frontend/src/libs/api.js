@@ -26,8 +26,8 @@ export const updateTodo = (nextTodo) => {
   return fetch(`${BASE_URL}/todo/${id}`, {
     method: 'PATCH',
     body: JSON.stringify({
-      title: nextTodo.title,
-      body: nextTodo.body,
+      title: nextTodo.title.trim(),
+      body: nextTodo.body.trim(),
     }),
     headers: {
       'Content-Type': 'application/json',

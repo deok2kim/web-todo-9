@@ -45,7 +45,10 @@ class Todos extends Component {
         createTodo(type, cardInfo)
           .then((res) => res.json())
           .then(({ data: { id } }) => {
-            this.setState({ ...this.state, todos: [...this.state.todos, { ...cardInfo, id }] });
+            this.setState({
+              ...this.state,
+              todos: [...this.state.todos, { ...cardInfo, id }],
+            });
           });
 
         return;
