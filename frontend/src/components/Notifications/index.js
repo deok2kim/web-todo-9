@@ -81,7 +81,6 @@ class Notifications extends Component {
     if (!this.isMount) {
       this.isMount = true;
       this.$container.insertAdjacentHTML('beforeend', this.template());
-      console.log(this.state);
       this.fetchNotifications();
 
       this.setEvent();
