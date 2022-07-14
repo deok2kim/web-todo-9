@@ -25,10 +25,10 @@ export const getNotifications = () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-    }
+    },
   });
-}
-  
+};
+
 export const updateTodo = (nextTodo) => {
   const { id } = nextTodo;
   return fetch(`${BASE_URL}/todo/${id}`, {

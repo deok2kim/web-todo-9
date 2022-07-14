@@ -1,8 +1,8 @@
 import './index.scss';
 
 import hamburger from '@/assets/hamburger.svg';
-import Component from '@/libs/Component';
 import { $ } from '@/commons/utils/query-selector';
+import Component from '@/libs/Component';
 
 class Nav extends Component {
   constructor($container, initialState, setNotificationsOpenState) {

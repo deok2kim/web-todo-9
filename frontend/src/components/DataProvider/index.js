@@ -11,7 +11,24 @@ class DataProvider extends Component {
     this.setNotificationsOpenState = setNotificationsOpenState;
     this.$notificationsComponent = '';
 
-    this.render();
+    this.state = {
+      todosList: [],
+      notifications: [],
+    };
+
+    this.init().then(this.render.bind(this));
+  }
+
+  async init() {
+    return getTodos()
+      .then((result) => result.json())
+      .then(({ data: todosList }) => {
+        this.state.todosList = todosList;
+      });
+
+    /**
+     * GET Notifications logic will be placed;
+     */
   }
 
   template() {
@@ -25,14 +42,19 @@ class DataProvider extends Component {
     `;
   }
 
+  setTodosList(setCallback) {
+    this.state.todosList = setCallback(this.state.todosList);
+    this.renderTodos();
+  }
+
   renderTodos() {
+    const { todosList } = this.state;
     const $todosContainer = $('.todos-container');
 
-    getTodos()
-      .then((result) => result.json())
-      .then(({ data: todosList }) => {
-        todosList.forEach((todos, index) => new Todos($todosContainer.children[index], todos));
-      });
+    todosList.forEach(
+      (_todos, index) =>
+        new Todos($todosContainer.children[index], todosList, this.setTodosList.bind(this)),
+    );
   }
 
   renderNotifications(isOpenNotifications) {
