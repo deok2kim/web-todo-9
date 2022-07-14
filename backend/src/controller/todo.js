@@ -78,7 +78,7 @@ export const deleteTodo = (req, res) => {
   try {
     connection
       .promise()
-      .query("DELETE FROM `Todo` WHERE `id`= ?", [id])
+      .query("UPDATE `Todo` SET `isDeleted` = 1 WHERE id = ?", [id])
       .then(() => {
         res
           .status(statusCode.OK)
