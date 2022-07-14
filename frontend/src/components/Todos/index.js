@@ -9,11 +9,12 @@ import { createTodo, deleteTodo, updateTodo } from '@/libs/api';
 import Component from '@/libs/Component';
 
 class Todos extends Component {
-  constructor($container, initialState) {
+  constructor($container, initialState, refetchNotifications) {
     super($container, initialState);
 
     this.currentActiveCard = null;
     this.render();
+    this.refetchNotifications = refetchNotifications;
   }
 
   getTodosLength() {
@@ -50,7 +51,8 @@ class Todos extends Component {
               ...this.state,
               todos: [...this.state.todos, { ...cardInfo, id }],
             });
-          });
+          })
+          .then(() => this.refetchNotifications());
 
         return;
       case '취소':
@@ -59,19 +61,19 @@ class Todos extends Component {
         return;
       case '수정':
         if (targetTodoIndex === -1) return;
+        const { title: prevTitle, type: prevType } = this.state.todos[targetTodoIndex];
         const nextTodos = [
           ...this.state.todos.slice(0, targetTodoIndex),
           cardInfo,
           ...this.state.todos.slice(targetTodoIndex + 1),
         ];
-
         this.setState({ ...this.state, todos: nextTodos });
-        updateTodo(cardInfo);
+        updateTodo({ ...cardInfo, prevTitle, prevType }).then(() => this.refetchNotifications());
         return;
       case '삭제':
         const afterDeletionTodos = this.state.todos.filter((todo) => todo.id !== cardInfo.id);
         this.setState({ ...this.state, todos: afterDeletionTodos });
-        deleteTodo(cardInfo.id);
+        deleteTodo(cardInfo.id).then(() => this.refetchNotifications());
         return;
     }
   }

@@ -3,6 +3,7 @@ import connection from "../lib/db.js";
 import { createRes } from "../utils/create-response.js";
 import { createUpdateQuery } from "../utils/create-update-query.js";
 import { statusCode } from "../utils/status-code.js";
+import { createNoti } from "./noti.js";
 
 const TODO_TYPE_LIST = ["todo", "onProgress", "done"];
 
@@ -42,7 +43,7 @@ export const createTodo = (req, res) => {
       .status(statusCode.BAD_REQUEST)
       .send(createRes.fail(statusCode.BAD_REQUEST, "empty body"));
 
-  const { title, body, author, type } = todo;
+  const { title, body, author, type, prevType, prevTitle } = todo;
 
   try {
     connection
@@ -57,7 +58,14 @@ export const createTodo = (req, res) => {
           [title, body, type, author, maxOrder ? maxOrder + 100 : 100],
           (err, result) => {
             if (err) throw Error(err);
+
             const { insertId } = result;
+            const data = {
+              action: "add",
+              payload: {},
+              todoId: insertId,
+            };
+            createNoti(data);
             res
               .status(statusCode.CREATED)
               .send(
@@ -86,6 +94,12 @@ export const deleteTodo = (req, res) => {
       .promise()
       .query("UPDATE `Todo` SET `isDeleted` = 1 WHERE id = ?", [id])
       .then(() => {
+        const data = {
+          action: "remove",
+          payload: {},
+          todoId: id,
+        };
+        createNoti(data);
         res
           .status(statusCode.OK)
           .send(createRes.success(statusCode.OK, "삭제됨"));
@@ -100,6 +114,7 @@ export const deleteTodo = (req, res) => {
 
 export const patchTodo = async (req, res) => {
   const { id } = req.params;
+  const { title, body, prevTitle, prevType } = req.body;
   if (!id)
     res
       .status(statusCode.BAD_REQUEST)
@@ -114,10 +129,21 @@ export const patchTodo = async (req, res) => {
     connection
       .promise()
       .query(
-        "UPDATE `Todo` SET " + createUpdateQuery(req.body) + " WHERE `id` = ?;",
+        "UPDATE `Todo` SET " +
+          createUpdateQuery({ title, body }) +
+          " WHERE `id` = ?;",
         [id]
       )
       .then(() => {
+        const data = {
+          action: "update",
+          payload: {
+            prevTitle,
+            prevType,
+          },
+          todoId: id,
+        };
+        createNoti(data);
         res
           .status(statusCode.OK)
           .send(createRes.success(statusCode.OK, "변경되었음."));
