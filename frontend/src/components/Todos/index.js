@@ -69,12 +69,7 @@ class Todos extends Component {
         updateTodo(cardInfo);
         return;
       case '삭제':
-        console.log(targetTodoIndex);
-        if (targetTodoIndex === -1) return;
-        const afterDeletionTodos = [
-          ...this.state.todos.slice(0, targetTodoIndex),
-          ...this.state.todos.slice(targetTodoIndex + 1),
-        ];
+        const afterDeletionTodos = this.state.todos.filter((todo) => todo.id !== cardInfo.id);
         this.setState({ ...this.state, todos: afterDeletionTodos });
         deleteTodo(cardInfo.id);
         return;

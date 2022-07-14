@@ -2,7 +2,6 @@ import './index.scss';
 
 import shortid from 'shortid';
 
-import remove from '@/assets/remove.svg';
 import { $ } from '@/commons/utils/query-selector';
 import { safelyInsertHTML } from '@/commons/utils/safelyInsertHTML';
 import Component from '@/libs/Component';
