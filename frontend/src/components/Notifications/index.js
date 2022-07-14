@@ -33,11 +33,8 @@ class Notifications extends Component {
     getNotifications()
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        console.log(data.data);
         const notifications = data.data;
         this.setState({ notifications });
-        console.log(this.state);
         this.state.notifications.forEach((noti) => new Notification(this.$container, noti));
       });
   }

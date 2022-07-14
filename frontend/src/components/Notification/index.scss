@@ -21,9 +21,13 @@
 
   &__action {
     font-style: normal;
-    font-weight: 700;
+    font-weight: 400;
     font-size: 16px;
     line-height: 23px;
+
+    b {
+      font-weight: 700;
+    }
   }
 
   &__time {
