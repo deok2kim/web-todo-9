@@ -19,7 +19,7 @@ CREATE TABLE Noti (
   `action` varchar(10),
   `payload` JSON NOT NULL,
   `todoId` INT,
-  `createAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (`todoId`) REFERENCES `Todo` (`id`),
   PRIMARY KEY(id)
 );
