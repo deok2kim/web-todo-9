@@ -15,8 +15,9 @@ CREATE TABLE Todo (
 
 CREATE TABLE Noti (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(20) NOT NULL,
-  `title` VARCHAR(20) NOT NULL,
   `action` JSON NOT NULL,
-  FOREIGN KEY (`cardTitle`) REFERENCES `Todo` (`title`),
+  `todoId` INT,
+  `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`todoId`) REFERENCES `Todo` (`id`),
+  PRIMARY KEY(id)
 );
