@@ -1,11 +1,15 @@
 import { $ } from '@/commons/utils/query-selector';
+import Notifications from '@/components/Notifications/index';
 import Todos from '@/components/Todos/index';
 import { getTodos } from '@/libs/api';
 import Component from '@/libs/Component';
 
 class DataProvider extends Component {
-  constructor($container, initialState) {
+  constructor($container, initialState, setNotificationsOpenState) {
     super($container, initialState);
+
+    this.setNotificationsOpenState = setNotificationsOpenState;
+    this.$notificationsComponent = '';
 
     this.render();
   }
@@ -21,8 +25,7 @@ class DataProvider extends Component {
     `;
   }
 
-  render() {
-    this.$container.insertAdjacentHTML('beforeend', this.template());
+  renderTodos() {
     const $todosContainer = $('.todos-container');
 
     getTodos()
@@ -30,6 +33,25 @@ class DataProvider extends Component {
       .then(({ data: todosList }) => {
         todosList.forEach((todos, index) => new Todos($todosContainer.children[index], todos));
       });
+  }
+
+  renderNotifications(isOpenNotifications) {
+    const $notificationsContainer = $('.notifications');
+    if (this.$notificationsComponent) {
+      this.$notificationsComponent.toggleNotifications(isOpenNotifications);
+    } else {
+      this.$notificationsComponent = new Notifications(
+        $notificationsContainer,
+        {},
+        this.setNotificationsOpenState,
+      );
+    }
+  }
+
+  render() {
+    this.$container.insertAdjacentHTML('beforeend', this.template());
+    this.renderTodos();
+    this.renderNotifications();
   }
 }
 
