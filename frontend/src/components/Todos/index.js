@@ -110,6 +110,7 @@ class Todos extends Component {
 
   render() {
     this.$container.innerHTML = this.template();
+    this.currentActiveCard = null;
     this.renderChildTodo();
 
     this.setEvent();
