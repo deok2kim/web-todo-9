@@ -1,6 +1,7 @@
 import { $ } from '@/commons/utils/query-selector';
-import Notification from '@/components/Notification/index';
 import Todos from '@/components/Todos/index';
+import { TODOS_TYPE_MAP } from '@/constants/mapper';
+import { getTodos } from '@/libs/api';
 import Component from '@/libs/Component';
 
 class DataProvider extends Component {
@@ -20,7 +21,12 @@ class DataProvider extends Component {
   render() {
     this.$container.insertAdjacentHTML('beforeend', this.template());
     const $todosContainer = $('.todos-container');
-    this.state.forEach((todos) => new Todos($todosContainer, todos));
+
+    getTodos()
+      .then((result) => result.json())
+      .then(({ data: todosList }) => {
+        todosList.forEach((todos) => new Todos($todosContainer, todos));
+      });
   }
 }
 

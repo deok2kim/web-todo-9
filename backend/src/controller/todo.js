@@ -3,28 +3,31 @@ import { createRes } from "../utils/create-response.js";
 import { createUpdateQuery } from "../utils/create-update-query.js";
 import { statusCode } from "../utils/status-code.js";
 
+const TODO_TYPE_LIST = ["todo", "onProgress", "done"];
+
+const getTodoByType = (type) => {
+  return connection
+    .promise()
+    .query('SELECT `title`, `author`, `body`, `type`, `order`, `id` FROM `Todo` WHERE isDeleted = 0 AND `type`= ?;', [type])
+};
+
 export const getTodo = (_req, res) => {
   try {
-    connection
-      .promise()
-      .query("SELECT `title`, `author`, `body`, `type`, `order`, `id` FROM `Todo` WHERE isDeleted = 0;")
-      .then((todoResult) => {
-        if (!todoResult)
-          res
-            .status(statusCode.INTERNAL_ERROR)
-            .send(
-              createRes.fail(
-                statusCode.INTERNAL_ERROR,
-                "something wrong in get todo list"
-              )
-            );
+    const promises = TODO_TYPE_LIST.map(getTodoByType);
+    Promise.all(promises).then((completedList) => {
+      let refinedTodo = [];
 
-        const [rows] = todoResult;
-
-        res
-          .status(statusCode.OK)
-          .send(createRes.success(statusCode.OK, "success", rows));
+      completedList.forEach(([row], index) => {
+        refinedTodo[index] = {
+          type: TODO_TYPE_LIST[index],
+          todos: row,
+        };
       });
+
+      res
+        .status(statusCode.OK)
+        .send(createRes.success(statusCode.OK, "success", refinedTodo));
+    });
   } catch (error) {}
 };
 
