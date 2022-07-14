@@ -7,7 +7,7 @@ export const getTodo = (_req, res) => {
   try {
     connection
       .promise()
-      .query("SELECT * FROM Todo;")
+      .query("SELECT `title`, `author`, `body`, `type`, `order`, `id` FROM `Todo` WHERE isDeleted = 0;")
       .then((todoResult) => {
         if (!todoResult)
           res
@@ -75,7 +75,7 @@ export const deleteTodo = (req, res) => {
   try {
     connection
       .promise()
-      .query("DELETE FROM `Todo` WHERE `id`= ?", [id])
+      .query("UPDATE `Todo` SET `isDeleted` = 1 WHERE id = ?", [id])
       .then(() => {
         res
           .status(statusCode.OK)
