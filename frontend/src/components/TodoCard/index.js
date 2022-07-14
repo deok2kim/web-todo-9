@@ -85,9 +85,9 @@ class TodoCard extends Component {
 
   handleClick(e) {
     const { cardStatus, cardInfo } = this.state;
-    const target = e.target;
+    const target = e.target.closest(`#card-${cardInfo.id} button`);
+    if (!target) return;
     const targetClassName = target.className;
-    if (!(target instanceof HTMLButtonElement)) return;
 
     const nextCardInfo = {
       ...cardInfo,
@@ -96,13 +96,13 @@ class TodoCard extends Component {
 
     if (targetClassName === 'btn accent') {
       this.setTodos(cardStatus === 'creatable' ? '등록' : '수정', nextCardInfo);
-    }
-
-    if (targetClassName === 'btn normal') {
+    } else if (targetClassName === 'btn normal') {
       if (cardStatus === 'editable') this.setCardStatus('idle');
       if (cardStatus === 'creatable') {
         this.setTodos('취소', nextCardInfo);
       }
+    } else if (targetClassName === 'card__btn-remove') {
+      this.setTodos('삭제', nextCardInfo);
     }
   }
 
@@ -131,8 +131,8 @@ class TodoCard extends Component {
     const { id } = this.state.cardInfo;
     const currentCard = $(`#card-${id}`);
     const buttonRef = currentCard.querySelector('button.card__btn-remove');
-    buttonRef.addEventListener('mouseenter', this.handleHover(true));
-    buttonRef.addEventListener('mouseleave', this.handleHover(false));
+    buttonRef?.addEventListener('mouseenter', this.handleHover(true));
+    buttonRef?.addEventListener('mouseleave', this.handleHover(false));
     currentCard.addEventListener('input', this.handleChange.bind(this));
     currentCard.addEventListener('click', this.handleClick.bind(this));
     currentCard.addEventListener('dblclick', this.handleDoubleClick.bind(this));
