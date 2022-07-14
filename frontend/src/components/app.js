@@ -8,7 +8,18 @@ import Component from '@/libs/Component';
 class App extends Component {
   constructor($container) {
     super($container);
-    this.render();
+    this.state = {
+      isOpenNotifications: false,
+    };
+    this.$dataProviderComponent = '';
+    this.init();
+  }
+  setNotificationsOpenState(nextState) {
+    this.setState(nextState);
+  }
+
+  render() {
+    this.$dataProviderComponent.renderNotifications(this.state.isOpenNotifications);
   }
 
   template() {
@@ -17,11 +28,16 @@ class App extends Component {
     `;
   }
 
-  render() {
+  init() {
     this.$container.innerHTML = this.template();
     const $mainPage = $('.main-page');
-    new Nav($mainPage, {});
-    new DataProvider($mainPage);
+    new Nav($mainPage, {}, this.setNotificationsOpenState.bind(this));
+    this.$dataProviderComponent = new DataProvider(
+      $mainPage,
+      {},
+      this.setNotificationsOpenState.bind(this),
+      this.$notificationsComponent,
+    );
   }
 }
 
