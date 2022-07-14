@@ -7,7 +7,7 @@ class Notifications extends Component {
   constructor($container, initialState, setNotificationsOpenState) {
     super($container, initialState);
 
-    this.$notificationsContainer = '';
+    this.isMount = false;
     this.dummy = [
       {
         username: '@sam',
@@ -68,8 +68,8 @@ class Notifications extends Component {
     `;
   }
   render() {
-    if (!this.$notificationsContainer) {
-      this.$notificationsContainer = true;
+    if (!this.isMount) {
+      this.isMount = true;
       this.$container.insertAdjacentHTML('beforeend', this.template());
       this.dummy.forEach((noti) => new Notification(this.$container, noti));
       this.setEvent();
