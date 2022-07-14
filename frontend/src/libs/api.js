@@ -36,6 +36,8 @@ export const updateTodo = (nextTodo) => {
     body: JSON.stringify({
       title: nextTodo.title.trim(),
       body: nextTodo.body.trim(),
+      prevTitle: nextTodo.prevTitle.trim(),
+      prevType: nextTodo.prevType.trim(),
     }),
     headers: {
       'Content-Type': 'application/json',

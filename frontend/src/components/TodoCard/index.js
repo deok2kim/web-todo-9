@@ -4,12 +4,14 @@ import shortid from 'shortid';
 
 import { $ } from '@/commons/utils/query-selector';
 import { safelyInsertHTML } from '@/commons/utils/safelyInsertHTML';
+import Modal from '@/components/Modal/index';
 import Component from '@/libs/Component';
 
 class TodoCard extends Component {
   constructor($container, initialState, setTodos) {
     super($container, initialState);
     this.setTodos = setTodos;
+    this.$modal = '';
     this.render();
   }
 
@@ -101,7 +103,8 @@ class TodoCard extends Component {
         this.setTodos('취소', nextCardInfo);
       }
     } else if (targetClassName === 'card__btn-remove') {
-      this.setTodos('삭제', nextCardInfo);
+      this.$modal = new Modal(this.$container, () => {});
+      this.$modal.setCbFunc(() => this.setTodos('삭제', nextCardInfo));
     }
   }
 

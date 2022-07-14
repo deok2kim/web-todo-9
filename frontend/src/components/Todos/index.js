@@ -9,12 +9,13 @@ import { createTodo, deleteTodo, updateTodo } from '@/libs/api';
 import Component from '@/libs/Component';
 
 class Todos extends Component {
-  constructor($container, initialState, setTodosList) {
+  constructor($container, initialState, setTodosList, refetchNotifications) {
     super($container, initialState);
 
     this.currentActiveCard = null;
     this.setTodosList = setTodosList;
     this.render();
+    this.refetchNotifications = refetchNotifications;
   }
 
   get todos() {
@@ -58,8 +59,8 @@ class Todos extends Component {
           .then((res) => res.json())
           .then(({ data: { id } }) => {
             this.setOwnTodosState([...this.todos, { ...cardInfo, id }]);
-          });
-
+          })
+          .then(() => this.refetchNotifications());
         return;
       case '취소':
         this.currentActiveCard.remove();
@@ -68,19 +69,21 @@ class Todos extends Component {
       case '수정':
         const targetTodoIndex = this.todos.findIndex((todo) => todo.id === cardInfo.id);
         if (targetTodoIndex === -1) return;
+        const { title: prevTitle } = this.todos[targetTodoIndex];
         const nextTodos = [
           ...this.todos.slice(0, targetTodoIndex),
           cardInfo,
           ...this.todos.slice(targetTodoIndex + 1),
         ];
-
         this.setOwnTodosState(nextTodos);
-        updateTodo(cardInfo);
+        updateTodo({ ...cardInfo, prevTitle, prevType: this.type }).then(() =>
+          this.refetchNotifications(),
+        );
         return;
       case '삭제':
         const afterDeletionTodos = this.todos.filter((todo) => todo.id !== cardInfo.id);
         this.setOwnTodosState(afterDeletionTodos);
-        deleteTodo(cardInfo.id);
+        deleteTodo(cardInfo.id).then(() => this.refetchNotifications());
         return;
     }
   }

@@ -41,6 +41,9 @@ class DataProvider extends Component {
       <aside class="notifications"></aside>
     `;
   }
+  refetchNotifications() {
+    this.$notificationsComponent.refetch();
+  }
 
   setTodosList(setCallback) {
     this.state.todosList = setCallback(this.state.todosList);
@@ -53,7 +56,12 @@ class DataProvider extends Component {
 
     todosList.forEach(
       (_todos, index) =>
-        new Todos($todosContainer.children[index], todosList, this.setTodosList.bind(this)),
+        new Todos(
+          $todosContainer.children[index],
+          todosList,
+          this.setTodosList.bind(this),
+          this.refetchNotifications.bind(this),
+        ),
     );
   }
 
