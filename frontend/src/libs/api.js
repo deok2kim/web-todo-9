@@ -20,3 +20,12 @@ export const createTodo = (todosType, cardInfo) => {
     },
   });
 };
+
+export const getNotifications = () => {
+  return fetch(`${BASE_URL}/noti`, {
+    method: 'GET',
+    headers: {
+      'Contetn-Type': 'application/json',
+    },
+  });
+};

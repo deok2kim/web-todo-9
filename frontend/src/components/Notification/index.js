@@ -6,19 +6,19 @@ import Component from '@/libs/Component';
 class Notification extends Component {
   constructor($container, initialState) {
     super($container, initialState);
-
+    console.log('asdf', this.state);
     this.render();
   }
 
   template() {
-    const { username, action, time } = this.state;
+    const { author, action, createdAt } = this.state;
     return `
     <div class="noti">
       <img src="${user}" />
       <div class="noti__info-wrapper">
-        <p class="noti__username">${username}adassd</p>
-        <p class="noti__action">${action}</p>
-        <p class="noti__time">${time}</p>
+        <p class="noti__username">@${author}</p>
+        <p class="noti__action">${Object.values(action).join('-')}</p>
+        <p class="noti__time">${createdAt}</p>
       </div>
     </div>
     `;

@@ -2,6 +2,7 @@ import remove from '@/assets/remove.svg';
 import { $ } from '@/commons/utils/query-selector';
 import Notification from '@/components/Notification/index';
 import Component from '@/libs/Component';
+import { getNotifications } from '@/libs/api';
 
 class Notifications extends Component {
   constructor($container, initialState, setNotificationsOpenState) {
@@ -27,6 +28,18 @@ class Notifications extends Component {
     };
 
     this.render();
+  }
+  fetchNotifications() {
+    getNotifications()
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        console.log(data.data);
+        const notifications = data.data;
+        this.setState({ notifications });
+        console.log(this.state);
+        this.state.notifications.forEach((noti) => new Notification(this.$container, noti));
+      });
   }
 
   setCloseNotifications() {
@@ -71,7 +84,9 @@ class Notifications extends Component {
     if (!this.isMount) {
       this.isMount = true;
       this.$container.insertAdjacentHTML('beforeend', this.template());
-      this.dummy.forEach((noti) => new Notification(this.$container, noti));
+      console.log(this.state);
+      this.fetchNotifications();
+
       this.setEvent();
       this.toggleNotifications();
     }
