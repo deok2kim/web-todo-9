@@ -7,7 +7,10 @@ export const getNoti = async (req, res) => {
   try {
     connection
       .promise()
-      .query("select Noti.id, Noti.action, Noti.createdAt, Todo.title, Todo.author from `Noti` JOIN `Todo` ON Todo.id = Noti.todoId limit ?", [LIMIT])
+      .query(
+        "select Noti.id, Noti.action, Noti.payload, Noti.createdAt, Todo.title, Todo.type, Todo.author from `Noti` JOIN `Todo` ON Todo.id = Noti.todoId limit ?",
+        [LIMIT]
+      )
       .then((notiResult) => {
         const [rows] = notiResult;
         res
@@ -24,17 +27,17 @@ export const getNoti = async (req, res) => {
 
 export const createNoti = async (req, res) => {
   try {
-    const { action, todoId } = req.body;
-    if (!action.type || !todoId || !action.after) {
+    const { action, payload, todoId } = req.body;
+    if (!action || !todoId) {
       throw new Error("action 또는 todoId 값이 없습니다.");
     }
 
     connection
       .promise()
-      .query("insert into Noti(`action`, `todoId`) values (?, ?)", [
-        JSON.stringify(action),
-        todoId,
-      ])
+      .query(
+        "insert into Noti(`action`, `payload`, `todoId`) values (?, ?, ?)",
+        [action, JSON.stringify(payload), todoId]
+      )
       .then(() => {
         res
           .status(statusCode.OK)

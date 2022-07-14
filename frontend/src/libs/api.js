@@ -20,6 +20,15 @@ export const createTodo = (todosType, cardInfo) => {
   });
 };
 
+export const getNotifications = () => {
+  return fetch(`${BASE_URL}/noti`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+}
+  
 export const updateTodo = (nextTodo) => {
   const { id } = nextTodo;
   return fetch(`${BASE_URL}/todo/${id}`, {
@@ -32,4 +41,5 @@ export const updateTodo = (nextTodo) => {
       'Content-Type': 'application/json',
     },
   });
-};
+}
+
