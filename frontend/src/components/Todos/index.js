@@ -42,8 +42,12 @@ class Todos extends Component {
     const { type } = this.state;
     switch (actionType) {
       case '등록':
-        this.setState({ ...this.state, todos: [...this.state.todos, cardInfo] });
-        createTodo(type, cardInfo);
+        createTodo(type, cardInfo)
+          .then((res) => res.json())
+          .then(({ data: { id } }) => {
+            this.setState({ ...this.state, todos: [...this.state.todos, { ...cardInfo, id }] });
+          });
+
         return;
       case '취소':
         this.currentActiveCard.remove();

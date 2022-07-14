@@ -51,12 +51,14 @@ export const createTodo = (req, res) => {
         connection.query(
           "INSERT INTO Todo (`title`, `body`, `type`, `author`, `order`) VALUES(?, ?, ?, ?, ?);",
           [title, body, type, author, maxOrder ? maxOrder + 100 : 100],
-          (err) => {
+          (err, result) => {
             if (err) throw Error(err);
-
+            const { insertId } = result;
             res
               .status(statusCode.CREATED)
-              .send(createRes.fail(statusCode.CREATED, "생성됨"));
+              .send(
+                createRes.fail(statusCode.CREATED, "생성됨", { id: insertId })
+              );
           }
         );
       });
