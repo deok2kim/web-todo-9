@@ -5,11 +5,11 @@ import { getTodos } from '@/libs/api';
 import Component from '@/libs/Component';
 
 class DataProvider extends Component {
-  constructor($container, initialState, setNotificationsOpenState, $notificationsComponent) {
+  constructor($container, initialState, setNotificationsOpenState) {
     super($container, initialState);
 
     this.setNotificationsOpenState = setNotificationsOpenState;
-    this.$notificationsComponent = $notificationsComponent;
+    this.$notificationsComponent = '';
 
     this.render();
   }

@@ -36,7 +36,6 @@ class App extends Component {
       $mainPage,
       {},
       this.setNotificationsOpenState.bind(this),
-      this.$notificationsComponent,
     );
   }
 }
