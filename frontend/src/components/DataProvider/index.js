@@ -25,10 +25,6 @@ class DataProvider extends Component {
       .then(({ data: todosList }) => {
         this.state.todosList = todosList;
       });
-
-    /**
-     * GET Notifications logic will be placed;
-     */
   }
 
   template() {

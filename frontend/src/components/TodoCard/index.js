@@ -6,6 +6,7 @@ import { $ } from '@/commons/utils/query-selector';
 import { safelyInsertHTML } from '@/commons/utils/safelyInsertHTML';
 import Modal from '@/components/Modal/index';
 import Component from '@/libs/Component';
+import Modal from '@/components/Modal/index';
 
 class TodoCard extends Component {
   constructor($container, initialState, handleTodosAction, handleAlterTodos) {

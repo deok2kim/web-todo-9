@@ -1,3 +1,4 @@
+import { $ } from '@/commons/utils/query-selector';
 import '@/components/Modal/index.scss';
 
 import { $ } from '@/commons/utils/query-selector';
