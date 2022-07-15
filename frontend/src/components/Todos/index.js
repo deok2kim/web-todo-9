@@ -74,6 +74,7 @@ class Todos extends Component {
     });
     updateTodo({
       ...targetInfo,
+      type,
       prevType: targetInfo.type,
       prevTitle: targetInfo.title,
       order,
