@@ -58,7 +58,6 @@ class Todos extends Component {
   }
 
   handleAlterTodos(distInfo, targetInfo) {
-    console.log(distInfo, targetInfo);
     const { type, order, cardId } = distInfo;
     const currentTypeIndex = TODOS_TYPE_MAP[this.type];
     this.setTodosList((prevTodosList) => {

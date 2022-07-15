@@ -162,15 +162,17 @@ class TodoCard extends Component {
   }
 
   handleMouseDown() {
+    const { cardStatus, cardInfo } = this.state;
+    if (cardStatus === 'editable') return;
     this.isMouseDown = true;
 
-    const turnOffMouseDown = (e) => {
+    const turnOffMouseDown = () => {
       this.isMouseDown = false;
       this.$mainPage.removeEventListener('mouseup', turnOffMouseDown);
     };
 
     this.$mainPage.addEventListener('mouseup', turnOffMouseDown);
-    if (this.state.cardStatus !== 'idle') {
+    if (cardStatus !== 'idle') {
       this.$mainPage.removeEventListener('mouseup', turnOffMouseDown);
       return;
     }
@@ -178,10 +180,7 @@ class TodoCard extends Component {
     setTimeout(() => {
       if (this.isMouseDown) {
         this.cloneCard();
-        $(`#card-${this.state.cardInfo.id}`).removeEventListener(
-          'mousedown',
-          this.handleMouseDown.bind(this),
-        );
+        $(`#card-${cardInfo.id}`).removeEv('mousedown', this.handleMouseDown.bind(this));
       }
     }, 300);
   }
