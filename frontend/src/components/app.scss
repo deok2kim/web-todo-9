@@ -57,6 +57,7 @@
   }
 
   &.close {
+    pointer-events: none;
     visibility: visible;
     animation-duration: 750ms;
     animation-name: slideOut;

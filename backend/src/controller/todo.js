@@ -114,7 +114,7 @@ export const deleteTodo = (req, res) => {
 
 export const patchTodo = async (req, res) => {
   const { id } = req.params;
-  const { title, body, prevTitle, prevType } = req.body;
+  const { title, body, prevTitle, prevType, action } = req.body;
   if (!id)
     res
       .status(statusCode.BAD_REQUEST)
@@ -136,7 +136,7 @@ export const patchTodo = async (req, res) => {
       )
       .then(() => {
         const data = {
-          action: "update",
+          action,
           payload: {
             prevTitle,
             prevType,

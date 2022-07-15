@@ -42,7 +42,12 @@ class Todos extends Component {
     if (this.currentActiveCard) return;
     const todoContainer = $(`#${this.type} .todos__todo-container`);
     const newCardInfo = TodoCard.createTodoCard();
-    new TodoCard(todoContainer, newCardInfo, this.handleTodosAction.bind(this));
+    new TodoCard(
+      todoContainer,
+      newCardInfo,
+      this.handleTodosAction.bind(this),
+      this.handleAlterTodos.bind(this),
+    );
 
     this.currentActiveCard = $(`#${this.type} .card.active`);
   }
@@ -50,6 +55,30 @@ class Todos extends Component {
   setEvent() {
     const removeButton = $(`#${this.type} .todos__btn-add-todo`);
     removeButton.addEventListener('click', this.handleCreate.bind(this));
+  }
+
+  handleAlterTodos(distInfo, targetInfo) {
+    console.log(distInfo, targetInfo);
+    const { type, order, cardId } = distInfo;
+    const currentTypeIndex = TODOS_TYPE_MAP[this.type];
+    this.setTodosList((prevTodosList) => {
+      const todosList = [...prevTodosList];
+      if (type !== this.type) {
+        todosList[currentTypeIndex].todos = todosList[currentTypeIndex].todos.filter(
+          (todo) => todo.id !== cardId,
+        );
+        todosList[TODOS_TYPE_MAP[type]].todos.push({ ...targetInfo, type, order: +order + 1 });
+      }
+
+      return todosList;
+    });
+    updateTodo({
+      ...targetInfo,
+      prevType: targetInfo.type,
+      prevTitle: targetInfo.title,
+      order,
+      action: 'move',
+    }).then(() => this.refetchNotifications());
   }
 
   handleTodosAction(actionType, cardInfo) {
@@ -76,7 +105,7 @@ class Todos extends Component {
           ...this.todos.slice(targetTodoIndex + 1),
         ];
         this.setOwnTodosState(nextTodos);
-        updateTodo({ ...cardInfo, prevTitle, prevType: this.type }).then(() =>
+        updateTodo({ ...cardInfo, prevTitle, prevType: this.type, action: 'update' }).then(() =>
           this.refetchNotifications(),
         );
         return;
@@ -116,6 +145,7 @@ class Todos extends Component {
           todoContainer,
           { cardInfo: todo, cardStatus: 'idle' },
           this.handleTodosAction.bind(this),
+          this.handleAlterTodos.bind(this),
         ),
     );
   }
