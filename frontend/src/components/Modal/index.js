@@ -1,7 +1,6 @@
 import { $ } from '@/commons/utils/query-selector';
 import '@/components/Modal/index.scss';
 
-import { $ } from '@/commons/utils/query-selector';
 import Component from '@/libs/Component';
 
 class Modal extends Component {
