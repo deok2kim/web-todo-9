@@ -33,3 +33,39 @@
 </div>
 
 ---
+
+## 이용 가이드
+
+1. Clone Repository
+
+```shell
+git clone https://github.com/woowa-techcamp-2022/web-todo-9.git
+```
+
+```shell
+cd web-todo-9/backend
+```
+
+2. Create .env
+> .env
+```shell=
+DB_USER=
+DB_PWD=
+DB_NAME=
+```
+
+3. Install dependency
+
+```shell=
+npm install
+```
+
+4. Execute Server
+
+```shell=
+npm run build
+```
+
+
+5. Now URL is available
+[배포링크](http://ec2-15-165-8-120.ap-northeast-2.compute.amazonaws.com/) 를 통해 접속
