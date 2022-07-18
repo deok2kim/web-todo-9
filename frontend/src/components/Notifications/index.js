@@ -1,8 +1,8 @@
 import remove from '@/assets/remove.svg';
 import { $ } from '@/commons/utils/query-selector';
 import Notification from '@/components/Notification/index';
-import Component from '@/libs/Component';
 import { getNotifications } from '@/libs/api';
+import Component from '@/libs/Component';
 
 class Notifications extends Component {
   constructor($container, initialState, setNotificationsOpenState) {

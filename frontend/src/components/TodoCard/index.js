@@ -4,14 +4,18 @@ import shortid from 'shortid';
 
 import { $ } from '@/commons/utils/query-selector';
 import { safelyInsertHTML } from '@/commons/utils/safelyInsertHTML';
+import Modal from '@/components/Modal/index';
 import Component from '@/libs/Component';
 import Modal from '@/components/Modal/index';
 
 class TodoCard extends Component {
-  constructor($container, initialState, setTodos) {
+  constructor($container, initialState, handleTodosAction, handleAlterTodos) {
     super($container, initialState);
-    this.setTodos = setTodos;
     this.$modal = '';
+    this.handleTodosAction = handleTodosAction;
+    this.handleAlterTodos = handleAlterTodos;
+    this.isMouseDown = false;
+    this.$mainPage = $('.main-page');
     this.render();
   }
 
@@ -84,6 +88,10 @@ class TodoCard extends Component {
     return { title: titleValue, body: bodyValue };
   }
 
+  handleMouseOut() {
+    if (this.state.cardStatus === 'removable') this.setCardStatus('idle');
+  }
+
   handleClick(e) {
     const { cardStatus, cardInfo } = this.state;
     const target = e.target.closest(`#card-${cardInfo.id} button`);
@@ -96,15 +104,15 @@ class TodoCard extends Component {
     };
 
     if (targetClassName === 'btn accent') {
-      this.setTodos(cardStatus === 'creatable' ? '등록' : '수정', nextCardInfo);
+      this.handleTodosAction(cardStatus === 'creatable' ? '등록' : '수정', nextCardInfo);
     } else if (targetClassName === 'btn normal') {
       if (cardStatus === 'editable') this.setCardStatus('idle');
       if (cardStatus === 'creatable') {
-        this.setTodos('취소', nextCardInfo);
+        this.handleTodosAction('취소', nextCardInfo);
       }
     } else if (targetClassName === 'card__btn-remove') {
       this.$modal = new Modal(this.$container, () => {});
-      this.$modal.setCbFunc(() => this.setTodos('삭제', nextCardInfo));
+      this.$modal.setCbFunc(() => this.handleTodosAction('삭제', nextCardInfo));
     }
   }
 
@@ -129,6 +137,81 @@ class TodoCard extends Component {
     };
   }
 
+  handleDrop(e) {
+    const dropSite = document.elementFromPoint(e.pageX, e.pageY);
+    const targetTodos = dropSite.closest('section.todos');
+    const hoveredTodo = dropSite.closest('article.card');
+
+    if (!targetTodos) {
+      $('.card.floating')?.remove();
+      this.setCardStatus('idle');
+      this.$mainPage.removeEventListener('mouseup', this.handleDrop.bind(this));
+      return;
+    }
+
+    this.handleAlterTodos(
+      {
+        type: targetTodos.id,
+        order: hoveredTodo ? hoveredTodo.style.order : 100,
+        cardId: this.state.cardInfo.id,
+      },
+      this.state.cardInfo,
+    );
+    $('.card.floating')?.remove();
+
+    this.$mainPage.removeEventListener('mouseup', this.handleDrop.bind(this));
+  }
+
+  handleMouseDown() {
+    const { cardStatus, cardInfo } = this.state;
+    if (cardStatus === 'editable') return;
+    this.isMouseDown = true;
+
+    const turnOffMouseDown = () => {
+      this.isMouseDown = false;
+      this.$mainPage.removeEventListener('mouseup', turnOffMouseDown);
+    };
+
+    this.$mainPage.addEventListener('mouseup', turnOffMouseDown);
+    if (cardStatus !== 'idle') {
+      this.$mainPage.removeEventListener('mouseup', turnOffMouseDown);
+      return;
+    }
+
+    setTimeout(() => {
+      if (this.isMouseDown) {
+        this.cloneCard();
+        $(`#card-${cardInfo.id}`).removeEv('mousedown', this.handleMouseDown.bind(this));
+      }
+    }, 300);
+  }
+
+  cloneCard() {
+    const { id } = this.state.cardInfo;
+    const currentCard = $(`#card-${id}`);
+    const clonedCard = currentCard.cloneNode(true);
+    clonedCard.classList.remove('idle');
+    clonedCard.classList.add('floating');
+    clonedCard.style.order = 'unset';
+
+    const rect = this.$mainPage.getBoundingClientRect();
+    clonedCard.style.left = currentCard.offsetLeft + 35 + 'px';
+    clonedCard.style.top = currentCard.offsetTop + 35 + 'px';
+
+    currentCard.classList.add('remain');
+    const move = (e) => {
+      if (!this.isMouseDown) {
+        this.handleDrop(e);
+        this.$mainPage.removeEventListener('mousemove', move);
+      }
+
+      clonedCard.style.left = e.clientX - rect.left + 'px';
+      clonedCard.style.top = e.clientY - rect.top + 'px';
+    };
+    this.$mainPage.appendChild(clonedCard);
+    this.$mainPage.addEventListener('mousemove', move);
+  }
+
   setEvent() {
     const { id } = this.state.cardInfo;
     const currentCard = $(`#card-${id}`);
@@ -138,6 +221,8 @@ class TodoCard extends Component {
     currentCard.addEventListener('input', this.handleChange.bind(this));
     currentCard.addEventListener('click', this.handleClick.bind(this));
     currentCard.addEventListener('dblclick', this.handleDoubleClick.bind(this));
+    currentCard.addEventListener('mousedown', this.handleMouseDown.bind(this));
+    currentCard.addEventListener('mouseout', this.handleMouseOut.bind(this));
   }
 
   template() {

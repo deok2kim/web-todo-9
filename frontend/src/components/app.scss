@@ -52,8 +52,12 @@
   width: 452px;
   padding: 44px 80px 0 40px;
   overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   &.close {
+    pointer-events: none;
     visibility: visible;
     animation-duration: 750ms;
     animation-name: slideOut;

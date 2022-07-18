@@ -30,15 +30,11 @@ export const getNotifications = () => {
 };
 
 export const updateTodo = (nextTodo) => {
-  const { id } = nextTodo;
+  const { id, ...restTodo } = nextTodo;
+
   return fetch(`${BASE_URL}/todo/${id}`, {
     method: 'PATCH',
-    body: JSON.stringify({
-      title: nextTodo.title.trim(),
-      body: nextTodo.body.trim(),
-      prevTitle: nextTodo.prevTitle.trim(),
-      prevType: nextTodo.prevType.trim(),
-    }),
+    body: JSON.stringify(restTodo),
     headers: {
       'Content-Type': 'application/json',
     },
